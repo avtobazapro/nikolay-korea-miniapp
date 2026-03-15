@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nikolay Korea — Mini App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -22,8 +25,8 @@
       </div>
 
       <div class="tabs">
-        <button class="tab active" data-tab="auto">Подбор авто</button>
-        <button class="tab" data-tab="parts">Автозапчасти</button>
+        <button class="tab active" type="button" data-tab="auto">Подбор авто</button>
+        <button class="tab" type="button" data-tab="parts">Автозапчасти</button>
       </div>
 
       <form id="leadForm" class="form">
@@ -41,16 +44,17 @@
           </div>
         </div>
 
+        <!-- ПОДБОР АВТО -->
         <div id="autoFields">
           <div class="grid">
             <div class="field">
               <label for="brand">Марка</label>
-              <input id="brand" name="brand" type="text" placeholder="Mercedes-Benz, BMW, Kia..." />
+              <input id="brand" name="brand" type="text" placeholder="BMW, Mercedes-Benz, Kia..." />
             </div>
 
             <div class="field">
               <label for="model">Модель</label>
-              <input id="model" name="model" type="text" placeholder="E-Class, Sorento, Carnival..." />
+              <input id="model" name="model" type="text" placeholder="X5, E-Class, Carnival..." />
             </div>
           </div>
 
@@ -66,12 +70,25 @@
             </div>
           </div>
 
+          <div class="grid">
+            <div class="field">
+              <label for="engineVolume">Объём двигателя</label>
+              <input id="engineVolume" name="engineVolume" type="text" placeholder="Например: 2.0 / 3.0" />
+            </div>
+
+            <div class="field">
+              <label for="mileage">Пробег до</label>
+              <input id="mileage" name="mileage" type="text" placeholder="Например: до 80 000 км" />
+            </div>
+          </div>
+
           <div class="field">
             <label for="comment">Пожелания</label>
-            <textarea id="comment" name="comment" rows="4" placeholder="Цвет, комплектация, пробег, город доставки..."></textarea>
+            <textarea id="comment" name="comment" rows="4" placeholder="Цвет, комплектация, салон, привод, сроки, город доставки..."></textarea>
           </div>
         </div>
 
+        <!-- АВТОЗАПЧАСТИ -->
         <div id="partsFields" class="hidden">
           <div class="grid">
             <div class="field">
@@ -81,25 +98,37 @@
 
             <div class="field">
               <label for="partsModel">Модель</label>
-              <input id="partsModel" name="partsModel" type="text" placeholder="Carnival, Mohave..." />
+              <input id="partsModel" name="partsModel" type="text" placeholder="Carnival, Mohave, Sorento..." />
             </div>
           </div>
 
           <div class="grid">
             <div class="field">
-              <label for="vin">VIN</label>
-              <input id="vin" name="vin" type="text" placeholder="Введите VIN, если есть" />
+              <label for="partsYear">Год выпуска</label>
+              <input id="partsYear" name="partsYear" type="text" placeholder="Например: 2021" />
             </div>
 
             <div class="field">
+              <label for="vin">VIN</label>
+              <input id="vin" name="vin" type="text" placeholder="Введите VIN, если есть" />
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="field">
               <label for="partName">Название детали</label>
-              <input id="partName" name="partName" type="text" placeholder="Например: фара, бампер, турбина" />
+              <input id="partName" name="partName" type="text" placeholder="Фара, бампер, турбина..." />
+            </div>
+
+            <div class="field">
+              <label for="article">Артикул / номер детали</label>
+              <input id="article" name="article" type="text" placeholder="Если есть номер детали" />
             </div>
           </div>
 
           <div class="field">
             <label for="partsComment">Комментарий</label>
-            <textarea id="partsComment" name="partsComment" rows="4" placeholder="Артикул, фото, город доставки, уточнения..."></textarea>
+            <textarea id="partsComment" name="partsComment" rows="4" placeholder="Сторона, цвет, срочность, город доставки, фото детали..."></textarea>
           </div>
         </div>
 
