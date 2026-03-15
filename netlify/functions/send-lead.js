@@ -19,18 +19,33 @@ exports.handler = async function (event) {
       };
     }
 
-    const text =
-      "Новая заявка с сайта\n\n" +
-      "Тип: " + (data.formType || "—") + "\n" +
-      "Имя: " + (data.name || "—") + "\n" +
-      "Контакт: " + (data.phone || "—") + "\n" +
-      "Марка: " + (data.brand || data.partsBrand || "—") + "\n" +
-      "Модель: " + (data.model || data.partsModel || "—") + "\n" +
-      "Год: " + (data.yearFrom || "—") + "\n" +
-      "Бюджет: " + (data.budget || "—") + "\n" +
-      "VIN: " + (data.vin || "—") + "\n" +
-      "Деталь: " + (data.partName || "—") + "\n" +
-      "Комментарий: " + (data.comment || data.partsComment || "—");
+    let text = "";
+
+    if (data.formType === "Автозапчасти") {
+      text =
+        "🔧 Новая заявка на автозапчасти\n\n" +
+        "Имя: " + (data.name || "—") + "\n" +
+        "Контакт: " + (data.phone || "—") + "\n" +
+        "Марка: " + (data.partsBrand || "—") + "\n" +
+        "Модель: " + (data.partsModel || "—") + "\n" +
+        "Год: " + (data.partsYear || "—") + "\n" +
+        "VIN: " + (data.vin || "—") + "\n" +
+        "Деталь: " + (data.partName || "—") + "\n" +
+        "Артикул: " + (data.article || "—") + "\n" +
+        "Комментарий: " + (data.partsComment || "—");
+    } else {
+      text =
+        "🚘 Новая заявка на подбор авто\n\n" +
+        "Имя: " + (data.name || "—") + "\n" +
+        "Контакт: " + (data.phone || "—") + "\n" +
+        "Марка: " + (data.brand || "—") + "\n" +
+        "Модель: " + (data.model || "—") + "\n" +
+        "Год от: " + (data.yearFrom || "—") + "\n" +
+        "Бюджет: " + (data.budget || "—") + "\n" +
+        "Объём двигателя: " + (data.engineVolume || "—") + "\n" +
+        "Пробег до: " + (data.mileage || "—") + "\n" +
+        "Пожелания: " + (data.comment || "—");
+    }
 
     const telegramResponse = await fetch(
       `https://api.telegram.org/bot${botToken}/sendMessage`,
