@@ -68,15 +68,18 @@ form.addEventListener("submit", async (e) => {
 
     const result = await response.json();
 
+    alert(JSON.stringify(result));
+
     if (!response.ok) {
       throw new Error(result.error || "Ошибка отправки");
     }
 
     statusEl.textContent = "Заявка успешно отправлена.";
     form.reset();
-    formTypeInput.value = document.querySelector(".tab.active").dataset.tab === "auto"
-      ? "Подбор авто"
-      : "Автозапчасти";
+    formTypeInput.value =
+      document.querySelector(".tab.active").dataset.tab === "auto"
+        ? "Подбор авто"
+        : "Автозапчасти";
 
     if (tg?.HapticFeedback?.notificationOccurred) {
       tg.HapticFeedback.notificationOccurred("success");
@@ -84,6 +87,7 @@ form.addEventListener("submit", async (e) => {
   } catch (error) {
     statusEl.textContent = "Не удалось отправить заявку. Попробуйте ещё раз.";
     console.error(error);
+    alert("Ошибка: " + error.message);
   } finally {
     submitBtn.disabled = false;
   }
