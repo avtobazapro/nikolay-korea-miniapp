@@ -13,6 +13,12 @@ const form = document.getElementById("leadForm");
 const statusEl = document.getElementById("status");
 const submitBtn = document.getElementById("submitBtn");
 
+function setStatus(text, type = "") {
+  statusEl.textContent = text;
+  statusEl.className = "status";
+  if (type) statusEl.classList.add(type);
+}
+
 tabs.forEach((tab) => {
   tab.addEventListener("click", () => {
     tabs.forEach((t) => t.classList.remove("active"));
@@ -29,13 +35,15 @@ tabs.forEach((tab) => {
       autoFields.classList.add("hidden");
       formTypeInput.value = "Автозапчасти";
     }
+
+    setStatus("");
   });
 });
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  statusEl.textContent = "Отправляем заявку...";
+  setStatus("Отправляем заявку...");
   submitBtn.disabled = true;
 
   const formData = new FormData(form);
@@ -44,16 +52,25 @@ form.addEventListener("submit", async (e) => {
     formType: formData.get("formType") || "",
     name: formData.get("name") || "",
     phone: formData.get("phone") || "",
+
+    // Авто
     brand: formData.get("brand") || "",
     model: formData.get("model") || "",
     yearFrom: formData.get("yearFrom") || "",
     budget: formData.get("budget") || "",
+    engineVolume: formData.get("engineVolume") || "",
+    mileage: formData.get("mileage") || "",
     comment: formData.get("comment") || "",
+
+    // Запчасти
     partsBrand: formData.get("partsBrand") || "",
     partsModel: formData.get("partsModel") || "",
+    partsYear: formData.get("partsYear") || "",
     vin: formData.get("vin") || "",
     partName: formData.get("partName") || "",
+    article: formData.get("article") || "",
     partsComment: formData.get("partsComment") || "",
+
     telegramUser: tg?.initDataUnsafe?.user || null
   };
 
@@ -68,13 +85,11 @@ form.addEventListener("submit", async (e) => {
 
     const result = await response.json();
 
-    alert(JSON.stringify(result));
-
     if (!response.ok) {
       throw new Error(result.error || "Ошибка отправки");
     }
 
-    statusEl.textContent = "Заявка успешно отправлена.";
+    setStatus("Заявка успешно отправлена.", "success");
     form.reset();
     formTypeInput.value =
       document.querySelector(".tab.active").dataset.tab === "auto"
@@ -85,9 +100,8 @@ form.addEventListener("submit", async (e) => {
       tg.HapticFeedback.notificationOccurred("success");
     }
   } catch (error) {
-    statusEl.textContent = "Не удалось отправить заявку. Попробуйте ещё раз.";
+    setStatus("Не удалось отправить заявку. Попробуйте ещё раз.", "error");
     console.error(error);
-    alert("Ошибка: " + error.message);
   } finally {
     submitBtn.disabled = false;
   }
