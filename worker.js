@@ -41,19 +41,25 @@ export default {
           photo.size > 0;
 
         let telegramUserText = "";
-        const telegramUserRaw = form.get("telegramUser");
+        let userReplyChatId = null;
 
+        const telegramUserRaw = form.get("telegramUser");
         if (telegramUserRaw) {
           try {
             const tgUser = JSON.parse(String(telegramUserRaw));
-            const fullName = [tgUser.first_name, tgUser.last_name].filter(Boolean).join(" ") || "—";
+            const fullName =
+              [tgUser.first_name, tgUser.last_name].filter(Boolean).join(" ") || "—";
             const username = tgUser.username ? `@${tgUser.username}` : "—";
-            const userId = tgUser.id || "—";
+            const userId = tgUser.id ? String(tgUser.id) : null;
+
+            if (userId) {
+              userReplyChatId = userId;
+            }
 
             telegramUserText =
               "\n\nTelegram user: " + fullName +
               "\nUsername: " + username +
-              "\nUser ID: " + userId;
+              "\nUser ID: " + (userId || "—");
           } catch (_) {}
         }
 
@@ -149,6 +155,22 @@ export default {
               { status: 500 }
             );
           }
+        }
+
+        if (userReplyChatId) {
+          const replyText =
+            "Спасибо, ваша заявка получена.\n" +
+            "Я уже получил ваш запрос и свяжусь с вами в ближайшее время.\n\n" +
+            "Если вопрос срочный, можете написать мне напрямую: @nee_gm";
+
+          await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              chat_id: userReplyChatId,
+              text: replyText
+            })
+          });
         }
 
         return Response.json({ ok: true });
