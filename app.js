@@ -19,6 +19,18 @@ const budgetInput = document.getElementById("budget");
 const autoMileageInput = document.getElementById("autoMileage");
 const fuelChips = document.querySelectorAll(".fuel-chip");
 
+const autoCarModelInput = document.getElementById("autoCarModel");
+const autoYearInput = document.getElementById("autoYear");
+const autoRegionInput = document.getElementById("autoRegion");
+const autoPhoneInput = document.getElementById("autoPhone");
+const commentInput = document.getElementById("comment");
+
+const partsCarModelInput = document.getElementById("partsCarModel");
+const partsYearInput = document.getElementById("partsYear");
+const partsPhoneInput = document.getElementById("partsPhone");
+const partNameInput = document.getElementById("partName");
+const partsCommentInput = document.getElementById("partsComment");
+
 function setStatus(text, type = "") {
   statusEl.textContent = text;
   statusEl.className = "status";
@@ -60,7 +72,118 @@ function setActiveTab(tabName) {
     formTypeInput.value = "Автозапчасти";
   }
 
+  clearErrors();
   setStatus("");
+}
+
+function markError(input, message = "") {
+  if (!input) return;
+  input.classList.add("input-error");
+  if (message) setStatus(message, "error");
+}
+
+function clearError(input) {
+  if (!input) return;
+  input.classList.remove("input-error");
+}
+
+function clearErrors() {
+  form.querySelectorAll(".input-error").forEach((el) => {
+    el.classList.remove("input-error");
+  });
+}
+
+function isPhoneValid(value) {
+  const digits = onlyDigits(value);
+  return digits.length >= 10;
+}
+
+function isYearRangeValid(value) {
+  if (!value.trim()) return true;
+  const years = value.match(/\b(19|20)\d{2}\b/g) || [];
+  if (!years.length) return false;
+  return years.every((year) => {
+    const y = Number(year);
+    return y >= 2010 && y <= 2026;
+  });
+}
+
+function scrollToFirstError() {
+  const firstError = form.querySelector(".input-error");
+  if (firstError) {
+    firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+    firstError.focus({ preventScroll: true });
+  }
+}
+
+function validateAutoForm() {
+  clearErrors();
+
+  if (!autoCarModelInput.value.trim()) {
+    markError(autoCarModelInput, "Укажите марку и модель автомобиля.");
+    scrollToFirstError();
+    return false;
+  }
+
+  if (!autoPhoneInput.value.trim()) {
+    markError(autoPhoneInput, "Укажите телефон для связи.");
+    scrollToFirstError();
+    return false;
+  }
+
+  if (!isPhoneValid(autoPhoneInput.value)) {
+    markError(autoPhoneInput, "Проверьте телефон. Нужно минимум 10 цифр.");
+    scrollToFirstError();
+    return false;
+  }
+
+  if (autoYearInput.value.trim() && !isYearRangeValid(autoYearInput.value)) {
+    markError(autoYearInput, "Год должен быть в диапазоне от 2010 до 2026.");
+    scrollToFirstError();
+    return false;
+  }
+
+  return true;
+}
+
+function validatePartsForm() {
+  clearErrors();
+
+  if (!partsCarModelInput.value.trim()) {
+    markError(partsCarModelInput, "Укажите марку и модель автомобиля.");
+    scrollToFirstError();
+    return false;
+  }
+
+  if (!partNameInput.value.trim()) {
+    markError(partNameInput, "Укажите, какая запчасть нужна.");
+    scrollToFirstError();
+    return false;
+  }
+
+  if (!partsPhoneInput.value.trim()) {
+    markError(partsPhoneInput, "Укажите телефон для связи.");
+    scrollToFirstError();
+    return false;
+  }
+
+  if (!isPhoneValid(partsPhoneInput.value)) {
+    markError(partsPhoneInput, "Проверьте телефон. Нужно минимум 10 цифр.");
+    scrollToFirstError();
+    return false;
+  }
+
+  if (partsYearInput.value.trim()) {
+    const yearDigits = onlyDigits(partsYearInput.value);
+    const yearNum = Number(yearDigits);
+    if (!(yearDigits.length === 4 && yearNum >= 2010 && yearNum <= 2026)) {
+      markError(partsYearInput, "Год выпуска должен быть от 2010 до 2026.");
+      scrollToFirstError();
+      return false;
+    }
+  }
+
+  return true;
 }
 
 tabs.forEach((tab) => {
@@ -75,6 +198,24 @@ fuelChips.forEach((chip) => {
     chip.classList.add("active");
     fuelTypeInput.value = chip.dataset.fuel;
   });
+});
+
+[
+  autoCarModelInput,
+  autoYearInput,
+  autoRegionInput,
+  autoPhoneInput,
+  commentInput,
+  partsCarModelInput,
+  partsYearInput,
+  partsPhoneInput,
+  partNameInput,
+  partsCommentInput,
+  budgetInput,
+  autoMileageInput
+].forEach((input) => {
+  if (!input) return;
+  input.addEventListener("input", () => clearError(input));
 });
 
 budgetInput.addEventListener("input", (e) => {
@@ -112,7 +253,12 @@ autoMileageInput.addEventListener("focus", (e) => {
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  setStatus("Отправляем заявку...");
+  const isAuto = formTypeInput.value === "Подбор авто";
+  const isValid = isAuto ? validateAutoForm() : validatePartsForm();
+
+  if (!isValid) return;
+
+  setStatus("Отправляем заявку...", "loading");
   submitBtn.disabled = true;
 
   try {
@@ -141,13 +287,8 @@ form.addEventListener("submit", async (e) => {
       throw new Error(result.error || "Ошибка отправки");
     }
 
-    setStatus("Заявка успешно отправлена.", "success");
+    setStatus("Спасибо, заявка отправлена. Я свяжусь с вами в ближайшее время.", "success");
     form.reset();
-
-    formTypeInput.value =
-      document.querySelector(".tab.active").dataset.tab === "auto"
-        ? "Подбор авто"
-        : "Автозапчасти";
 
     fuelTypeInput.value = "Дизель";
     fuelChips.forEach((chip) => chip.classList.remove("active"));
