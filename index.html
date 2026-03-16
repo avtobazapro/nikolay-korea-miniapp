@@ -36,111 +36,176 @@
 
       <form id="leadForm" class="form">
         <input type="hidden" id="formType" name="formType" value="Подбор авто" />
+        <input type="hidden" id="fuelType" name="fuelType" value="Дизель" />
 
         <div id="autoFields">
           <div class="field">
-            <label for="name">Ваше имя</label>
-            <input id="name" name="name" type="text" placeholder="Например: Николай" required />
-          </div>
-
-          <div class="field">
-            <label for="phone">Телефон для связи</label>
-            <input id="phone" name="phone" type="text" placeholder="Например: +7 999 123-45-67" required />
-          </div>
-
-          <div class="field">
-            <label for="brand">Марка</label>
-            <select id="brand" name="brand"></select>
-          </div>
-
-          <div class="field">
-            <label for="model">Модель</label>
-            <select id="model" name="model"></select>
-          </div>
-
-          <div class="field">
-            <label for="modification">Модификация / версия</label>
-            <select id="modification" name="modification"></select>
+            <label for="autoCarModel">Марка и модель</label>
+            <input
+              id="autoCarModel"
+              name="autoCarModel"
+              type="text"
+              placeholder="Например: Genesis GV80, Kia Carnival, BMW 520i"
+              required
+            />
           </div>
 
           <div class="row-2">
             <div class="field">
-              <label for="yearFrom">Год выпуска</label>
-              <select id="yearFrom" name="yearFrom"></select>
+              <label for="autoYear">Год выпуска (от / до)</label>
+              <input
+                id="autoYear"
+                name="autoYear"
+                type="text"
+                placeholder="Например: от 2010 до 2026"
+              />
             </div>
 
             <div class="field">
-              <label for="fuelType">Топливо</label>
-              <input id="fuelType" name="fuelType" type="text" placeholder="Например: дизель / бензин / гибрид" />
+              <label for="autoMileage">Пробег, км</label>
+              <input
+                id="autoMileage"
+                name="autoMileage"
+                type="text"
+                inputmode="numeric"
+                placeholder="Например: до 80 000 км"
+              />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Топливо</label>
+            <div class="fuel-chips" id="fuelChips">
+              <button class="fuel-chip active" type="button" data-fuel="Дизель">Дизель</button>
+              <button class="fuel-chip" type="button" data-fuel="Бензин">Бензин</button>
+              <button class="fuel-chip" type="button" data-fuel="Гибрид">Гибрид</button>
+              <button class="fuel-chip" type="button" data-fuel="Электричка">Электричка</button>
+              <button class="fuel-chip" type="button" data-fuel="Газ">Газ</button>
             </div>
           </div>
 
           <div class="row-2">
             <div class="field">
-              <label for="mileage">Пробег до</label>
-              <div class="range-wrap">
-                <input id="mileage" name="mileage" type="range" min="0" max="250000" step="5000" value="80000" />
-                <div class="range-value" id="mileageValue">80 000 km</div>
-              </div>
+              <label for="autoRegion">Регион получения авто</label>
+              <input
+                id="autoRegion"
+                name="autoRegion"
+                type="text"
+                placeholder="Москва, Краснодар, Владивосток"
+              />
             </div>
 
             <div class="field">
-              <label for="budget">Бюджет, ₽</label>
-              <input id="budget" name="budget" type="text" inputmode="numeric" placeholder="Например: 2 000 000 ₽" />
+              <label for="autoPhone">Телефон для связи</label>
+              <input
+                id="autoPhone"
+                name="autoPhone"
+                type="text"
+                placeholder="Например: +7 999 123-45-67"
+                required
+              />
             </div>
           </div>
 
           <div class="field">
-            <label for="comment">Дополнительно (цвет, комплектация, салон, сроки)</label>
-            <textarea id="comment" name="comment" rows="5" placeholder="Напишите пожелания по автомобилю, цвету, комплектации, срокам и другим параметрам..."></textarea>
+            <label for="budget">Бюджет, ₽</label>
+            <input
+              id="budget"
+              name="budget"
+              type="text"
+              inputmode="numeric"
+              placeholder="Например: 2 000 000 ₽"
+            />
+          </div>
+
+          <div class="field">
+            <label for="comment">Дополнительно (VIN, комплектация, цвет)</label>
+            <textarea
+              id="comment"
+              name="comment"
+              rows="5"
+              placeholder="Напишите VIN (если есть), желаемую комплектацию, цвет, сроки..."
+            ></textarea>
           </div>
 
           <div class="helper-text">
-            Можно указать удобное время для связи — я свяжусь с вами в Telegram или по телефону.
+            Можно указать телефон или удобное время для связи — я свяжусь с вами в Telegram или по телефону.
           </div>
         </div>
 
         <div id="partsFields" class="hidden">
           <div class="field">
-            <label for="partsName">Ваше имя</label>
-            <input id="partsName" name="name" type="text" placeholder="Например: Николай" />
-          </div>
-
-          <div class="field">
-            <label for="partsPhoneVisual">Телефон для связи</label>
-            <input id="partsPhoneVisual" name="phone" type="text" placeholder="Например: +7 999 123-45-67" />
-          </div>
-
-          <div class="field">
-            <label for="partsBrand">Марка авто</label>
-            <select id="partsBrand" name="partsBrand"></select>
-          </div>
-
-          <div class="field">
-            <label for="partsModel">Модель</label>
-            <select id="partsModel" name="partsModel"></select>
+            <label for="partsCarModel">Марка и модель авто</label>
+            <input
+              id="partsCarModel"
+              name="partsCarModel"
+              type="text"
+              placeholder="Например: Kia Carnival 2.2D, Hyundai Solaris"
+            />
           </div>
 
           <div class="row-2">
             <div class="field">
               <label for="partsYear">Год выпуска</label>
-              <select id="partsYear" name="partsYear"></select>
+              <input
+                id="partsYear"
+                name="partsYear"
+                type="text"
+                placeholder="Например: 2023"
+              />
             </div>
 
             <div class="field">
               <label for="vin">VIN (если есть)</label>
-              <input id="vin" name="vin" type="text" placeholder="Например: KNAM64..." />
+              <input
+                id="vin"
+                name="vin"
+                type="text"
+                placeholder="Например: KNAM64..."
+              />
             </div>
           </div>
 
           <div class="field">
             <label for="partName">Что нужно (название запчасти / узла)</label>
-            <input id="partName" name="partName" type="text" placeholder="Например: передний бампер, левая фара, двигатель" />
+            <input
+              id="partName"
+              name="partName"
+              type="text"
+              placeholder="Например: передний бампер, левая фара, двигатель"
+            />
           </div>
 
           <div class="field">
             <label for="article">Оригинальный номер / артикул (если есть)</label>
-            <input id="article" name="article" type="text" placeholder="Например: 92101-S0000, 28113-5H000" />
+            <input
+              id="article"
+              name="article"
+              type="text"
+              placeholder="Например: 92101-S0000, 28113-5H000"
+            />
+          </div>
+
+          <div class="row-2">
+            <div class="field">
+              <label for="partsRegion">Регион / город доставки</label>
+              <input
+                id="partsRegion"
+                name="partsRegion"
+                type="text"
+                placeholder="Москва, Краснодар, Владивосток"
+              />
+            </div>
+
+            <div class="field">
+              <label for="partsPhone">Телефон для связи</label>
+              <input
+                id="partsPhone"
+                name="partsPhone"
+                type="text"
+                placeholder="Например: +7 999 123-45-67"
+              />
+            </div>
           </div>
 
           <div class="field">
@@ -150,7 +215,12 @@
 
           <div class="field">
             <label for="partsComment">Дополнительно (фото, срочность, пожелания)</label>
-            <textarea id="partsComment" name="partsComment" rows="5" placeholder="Напишите всё, что важно: сторона, цвет, есть ли фото детали, срочность, город доставки..."></textarea>
+            <textarea
+              id="partsComment"
+              name="partsComment"
+              rows="5"
+              placeholder="Напишите всё, что важно: сторона, цвет, есть ли фото детали, срочность..."
+            ></textarea>
           </div>
 
           <div class="helper-text">
@@ -171,7 +241,6 @@
     </main>
   </div>
 
-  <script src="/cars-data.js"></script>
   <script src="/app.js"></script>
 </body>
 </html>
