@@ -16,13 +16,24 @@
     <div class="bg-glow bg-glow-2"></div>
 
     <main class="card">
-      <div class="brand">
-        <div class="brand-badge">NK</div>
-        <div>
-          <h1>NIKOLAY KOREA</h1>
-          <p>Подбор авто и автозапчастей из Южной Кореи</p>
+      <div class="card-highlight"></div>
+
+      <section class="hero">
+        <div class="hero-left">
+          <div class="brand">
+            <div class="brand-badge">NK</div>
+
+            <div class="brand-copy">
+              <div class="brand-topline">
+                <span class="brand-chip">KOREA · AUTO & PARTS</span>
+              </div>
+
+              <h1>NIKOLAY KOREA</h1>
+              <p>Подбор автомобилей и автозапчастей из Южной Кореи</p>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
       <div class="tabs">
         <button class="tab active" type="button" data-tab="auto">Подбор авто</button>
@@ -44,7 +55,6 @@
           </div>
         </div>
 
-        <!-- ПОДБОР АВТО -->
         <div id="autoFields">
           <div class="grid">
             <div class="field">
@@ -88,7 +98,6 @@
           </div>
         </div>
 
-        <!-- АВТОЗАПЧАСТИ -->
         <div id="partsFields" class="hidden">
           <div class="grid">
             <div class="field">
@@ -132,7 +141,10 @@
           </div>
         </div>
 
-        <button id="submitBtn" class="submit-btn" type="submit">Отправить заявку</button>
+        <button id="submitBtn" class="submit-btn" type="submit">
+          <span>Отправить заявку</span>
+        </button>
+
         <p id="status" class="status"></p>
       </form>
     </main>
