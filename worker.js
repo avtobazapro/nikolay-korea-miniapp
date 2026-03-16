@@ -14,24 +14,23 @@ export default {
         }
 
         const formType = String(form.get("formType") || "");
-        const name = String(form.get("name") || "—");
-        const phone = String(form.get("phone") || "—");
 
-        const brand = String(form.get("brand") || "—");
-        const model = String(form.get("model") || "—");
-        const modification = String(form.get("modification") || "—");
-        const yearFrom = String(form.get("yearFrom") || "—");
-        const budget = String(form.get("budget") || "—");
-        const mileage = String(form.get("mileage") || "—");
+        const autoCarModel = String(form.get("autoCarModel") || "—");
+        const autoYear = String(form.get("autoYear") || "—");
+        const autoMileage = String(form.get("autoMileage") || "—");
         const fuelType = String(form.get("fuelType") || "—");
+        const autoRegion = String(form.get("autoRegion") || "—");
+        const autoPhone = String(form.get("autoPhone") || "—");
+        const budget = String(form.get("budget") || "—");
         const comment = String(form.get("comment") || "—");
 
-        const partsBrand = String(form.get("partsBrand") || "—");
-        const partsModel = String(form.get("partsModel") || "—");
+        const partsCarModel = String(form.get("partsCarModel") || "—");
         const partsYear = String(form.get("partsYear") || "—");
         const vin = String(form.get("vin") || "—");
         const partName = String(form.get("partName") || "—");
         const article = String(form.get("article") || "—");
+        const partsRegion = String(form.get("partsRegion") || "—");
+        const partsPhone = String(form.get("partsPhone") || "—");
         const partsComment = String(form.get("partsComment") || "—");
 
         const photo = form.get("partPhoto");
@@ -67,15 +66,14 @@ export default {
         if (formType === "Автозапчасти") {
           const caption =
             "🔧 Новая заявка на автозапчасти\n\n" +
-            "Имя: " + name + "\n" +
-            "Контакт: " + phone + "\n" +
-            "Марка: " + partsBrand + "\n" +
-            "Модель: " + partsModel + "\n" +
-            "Год: " + partsYear + "\n" +
+            "Марка и модель: " + partsCarModel + "\n" +
+            "Год выпуска: " + partsYear + "\n" +
             "VIN: " + vin + "\n" +
-            "Деталь: " + partName + "\n" +
+            "Что нужно: " + partName + "\n" +
             "Артикул: " + article + "\n" +
-            "Комментарий: " + partsComment +
+            "Регион доставки: " + partsRegion + "\n" +
+            "Телефон: " + partsPhone + "\n" +
+            "Дополнительно: " + partsComment +
             telegramUserText;
 
           if (hasPhoto) {
@@ -125,16 +123,14 @@ export default {
         } else {
           const text =
             "🚘 Новая заявка на подбор авто\n\n" +
-            "Имя: " + name + "\n" +
-            "Контакт: " + phone + "\n" +
-            "Марка: " + brand + "\n" +
-            "Модель: " + model + "\n" +
-            "Модификация: " + modification + "\n" +
-            "Год: " + yearFrom + "\n" +
-            "Бюджет: " + budget + "\n" +
-            "Пробег до: " + mileage + "\n" +
+            "Марка и модель: " + autoCarModel + "\n" +
+            "Год выпуска: " + autoYear + "\n" +
+            "Пробег: " + autoMileage + "\n" +
             "Топливо: " + fuelType + "\n" +
-            "Пожелания: " + comment +
+            "Регион получения: " + autoRegion + "\n" +
+            "Телефон: " + autoPhone + "\n" +
+            "Бюджет: " + budget + "\n" +
+            "Дополнительно: " + comment +
             telegramUserText;
 
           const telegramResponse = await fetch(
