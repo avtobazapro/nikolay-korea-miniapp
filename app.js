@@ -75,7 +75,7 @@ form.addEventListener("submit", async (e) => {
   };
 
   try {
-    const response = await fetch("/.netlify/functions/send-lead", {
+    const response = await fetch("/api/send-lead", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
