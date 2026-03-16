@@ -55,6 +55,7 @@
           </div>
         </div>
 
+        <!-- ПОДБОР АВТО -->
         <div id="autoFields">
           <div class="grid">
             <div class="field">
@@ -70,25 +71,28 @@
 
           <div class="grid">
             <div class="field">
-              <label for="yearFrom">Год от</label>
-              <input id="yearFrom" name="yearFrom" type="text" placeholder="2020" />
+              <label for="yearFrom">Год</label>
+              <select id="yearFrom" name="yearFrom"></select>
             </div>
 
             <div class="field">
               <label for="budget">Бюджет</label>
-              <input id="budget" name="budget" type="text" placeholder="до 3 500 000 ₽" />
+              <input id="budget" name="budget" type="text" inputmode="numeric" placeholder="Например: 7 000 000 ₽" />
             </div>
           </div>
 
           <div class="grid">
             <div class="field">
               <label for="engineVolume">Объём двигателя</label>
-              <input id="engineVolume" name="engineVolume" type="text" placeholder="Например: 2.0 / 3.0" />
+              <select id="engineVolume" name="engineVolume"></select>
             </div>
 
             <div class="field">
               <label for="mileage">Пробег до</label>
-              <input id="mileage" name="mileage" type="text" placeholder="Например: до 80 000 км" />
+              <div class="range-wrap">
+                <input id="mileage" name="mileage" type="range" min="0" max="500000" step="5000" value="80000" />
+                <div class="range-value" id="mileageValue">80 000 km</div>
+              </div>
             </div>
           </div>
 
@@ -98,6 +102,7 @@
           </div>
         </div>
 
+        <!-- АВТОЗАПЧАСТИ -->
         <div id="partsFields" class="hidden">
           <div class="grid">
             <div class="field">
@@ -114,7 +119,7 @@
           <div class="grid">
             <div class="field">
               <label for="partsYear">Год выпуска</label>
-              <input id="partsYear" name="partsYear" type="text" placeholder="Например: 2021" />
+              <select id="partsYear" name="partsYear"></select>
             </div>
 
             <div class="field">
@@ -125,13 +130,28 @@
 
           <div class="grid">
             <div class="field">
-              <label for="partName">Название детали</label>
-              <input id="partName" name="partName" type="text" placeholder="Фара, бампер, турбина..." />
+              <label for="partsEngineVolume">Объём двигателя</label>
+              <select id="partsEngineVolume" name="partsEngineVolume"></select>
             </div>
 
             <div class="field">
+              <label for="partName">Название детали</label>
+              <input id="partName" name="partName" type="text" placeholder="Фара, бампер, турбина..." />
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="field">
               <label for="article">Артикул / номер детали</label>
               <input id="article" name="article" type="text" placeholder="Если есть номер детали" />
+            </div>
+
+            <div class="field">
+              <label for="partsMileage">Пробег авто</label>
+              <div class="range-wrap">
+                <input id="partsMileage" name="partsMileage" type="range" min="0" max="500000" step="5000" value="80000" />
+                <div class="range-value" id="partsMileageValue">80 000 km</div>
+              </div>
             </div>
           </div>
 
