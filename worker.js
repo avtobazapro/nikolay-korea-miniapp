@@ -15,6 +15,7 @@ export default {
 
         const formType = String(form.get("formType") || "");
 
+        const fullName = String(form.get("fullName") || "—");
         const autoCarModel = String(form.get("autoCarModel") || "—");
         const autoYear = String(form.get("autoYear") || "—");
         const autoMileage = String(form.get("autoMileage") || "—");
@@ -24,6 +25,7 @@ export default {
         const budget = String(form.get("budget") || "—");
         const comment = String(form.get("comment") || "—");
 
+        const partsFullName = String(form.get("partsFullName") || "—");
         const partsCarModel = String(form.get("partsCarModel") || "—");
         const partsYear = String(form.get("partsYear") || "—");
         const vin = String(form.get("vin") || "—");
@@ -47,17 +49,14 @@ export default {
         if (telegramUserRaw) {
           try {
             const tgUser = JSON.parse(String(telegramUserRaw));
-            const fullName =
-              [tgUser.first_name, tgUser.last_name].filter(Boolean).join(" ") || "—";
+            const tgName = [tgUser.first_name, tgUser.last_name].filter(Boolean).join(" ") || "—";
             const username = tgUser.username ? `@${tgUser.username}` : "—";
             const userId = tgUser.id ? String(tgUser.id) : null;
 
-            if (userId) {
-              userReplyChatId = userId;
-            }
+            if (userId) userReplyChatId = userId;
 
             telegramUserText =
-              "\n\nTelegram user: " + fullName +
+              "\n\nTelegram user: " + tgName +
               "\nUsername: " + username +
               "\nUser ID: " + (userId || "—");
           } catch (_) {}
@@ -66,13 +65,14 @@ export default {
         if (formType === "Автозапчасти") {
           const caption =
             "🔧 Новая заявка на автозапчасти\n\n" +
+            "ФИО: " + partsFullName + "\n" +
             "Марка и модель: " + partsCarModel + "\n" +
             "Год выпуска: " + partsYear + "\n" +
             "VIN: " + vin + "\n" +
             "Что нужно: " + partName + "\n" +
             "Артикул: " + article + "\n" +
             "Регион доставки: " + partsRegion + "\n" +
-            "Телефон: " + partsPhone + "\n" +
+            "Контакт: " + partsPhone + "\n" +
             "Дополнительно: " + partsComment +
             telegramUserText;
 
@@ -84,10 +84,7 @@ export default {
 
             const telegramResponse = await fetch(
               `https://api.telegram.org/bot${botToken}/sendPhoto`,
-              {
-                method: "POST",
-                body: telegramForm
-              }
+              { method: "POST", body: telegramForm }
             );
 
             const telegramResult = await telegramResponse.json();
@@ -123,12 +120,13 @@ export default {
         } else {
           const text =
             "🚘 Новая заявка на подбор авто\n\n" +
+            "ФИО: " + fullName + "\n" +
             "Марка и модель: " + autoCarModel + "\n" +
             "Год выпуска: " + autoYear + "\n" +
             "Пробег: " + autoMileage + "\n" +
             "Топливо: " + fuelType + "\n" +
             "Регион получения: " + autoRegion + "\n" +
-            "Телефон: " + autoPhone + "\n" +
+            "Контакт: " + autoPhone + "\n" +
             "Бюджет: " + budget + "\n" +
             "Дополнительно: " + comment +
             telegramUserText;
