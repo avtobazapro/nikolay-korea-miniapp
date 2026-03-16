@@ -28,6 +28,8 @@ export default {
         const partsBrand = String(form.get("partsBrand") || "—");
         const partsModel = String(form.get("partsModel") || "—");
         const partsYear = String(form.get("partsYear") || "—");
+        const partsEngineVolume = String(form.get("partsEngineVolume") || "—");
+        const partsMileage = String(form.get("partsMileage") || "—");
         const vin = String(form.get("vin") || "—");
         const partName = String(form.get("partName") || "—");
         const article = String(form.get("article") || "—");
@@ -71,6 +73,8 @@ export default {
             "Марка: " + partsBrand + "\n" +
             "Модель: " + partsModel + "\n" +
             "Год: " + partsYear + "\n" +
+            "Объём двигателя: " + partsEngineVolume + "\n" +
+            "Пробег авто: " + partsMileage + "\n" +
             "VIN: " + vin + "\n" +
             "Деталь: " + partName + "\n" +
             "Артикул: " + article + "\n" +
@@ -128,7 +132,7 @@ export default {
             "Контакт: " + phone + "\n" +
             "Марка: " + brand + "\n" +
             "Модель: " + model + "\n" +
-            "Год от: " + yearFrom + "\n" +
+            "Год: " + yearFrom + "\n" +
             "Бюджет: " + budget + "\n" +
             "Объём двигателя: " + engineVolume + "\n" +
             "Пробег до: " + mileage + "\n" +
