@@ -15,283 +15,158 @@ const submitBtn = document.getElementById("submitBtn");
 
 const brandSelect = document.getElementById("brand");
 const modelSelect = document.getElementById("model");
+const modificationSelect = document.getElementById("modification");
+
 const partsBrandSelect = document.getElementById("partsBrand");
 const partsModelSelect = document.getElementById("partsModel");
 
 const yearFromSelect = document.getElementById("yearFrom");
 const partsYearSelect = document.getElementById("partsYear");
-const engineVolumeSelect = document.getElementById("engineVolume");
 
 const mileageInput = document.getElementById("mileage");
 const mileageValue = document.getElementById("mileageValue");
 
 const budgetInput = document.getElementById("budget");
 
-/**
- * Марки → модели → доступные объёмы двигателя
- * Можно дальше расширять без изменения логики.
- */
 const CAR_DATA = {
   "Audi": {
-    "A3": ["1.4 л", "1.5 л", "1.8 л", "2.0 л"],
-    "A4": ["2.0 л", "3.0 л"],
-    "A5": ["2.0 л", "3.0 л"],
-    "A6": ["2.0 л", "3.0 л"],
-    "A7": ["3.0 л"],
-    "A8": ["3.0 л", "4.0 л"],
-    "Q3": ["1.4 л", "2.0 л"],
-    "Q5": ["2.0 л", "3.0 л"],
-    "Q7": ["2.0 л", "3.0 л", "4.0 л"],
-    "Q8": ["3.0 л", "4.0 л"],
-    "e-tron": ["EV"]
+    "A3": ["A3 35 TFSI", "A3 40 TFSI", "A3 Sportback 35 TFSI"],
+    "A4": ["A4 35 TFSI", "A4 40 TFSI", "A4 45 TFSI quattro"],
+    "A5": ["A5 40 TFSI", "A5 45 TFSI quattro"],
+    "A6": ["A6 40 TDI", "A6 45 TFSI", "A6 50 TDI quattro"],
+    "A7": ["A7 45 TFSI", "A7 50 TDI quattro"],
+    "A8": ["A8 50 TDI", "A8 55 TFSI", "A8 L 60 TFSI"],
+    "Q3": ["Q3 35 TFSI", "Q3 40 TFSI quattro"],
+    "Q5": ["Q5 40 TDI", "Q5 45 TFSI quattro"],
+    "Q7": ["Q7 45 TDI", "Q7 50 TDI", "Q7 55 TFSI"],
+    "Q8": ["Q8 50 TDI", "Q8 55 TFSI"],
+    "e-tron": ["e-tron 50 quattro", "e-tron 55 quattro"]
   },
   "BMW": {
-    "1 Series": ["1.5 л", "2.0 л"],
-    "2 Series": ["1.5 л", "2.0 л", "3.0 л"],
-    "3 Series": ["2.0 л", "3.0 л"],
-    "4 Series": ["2.0 л", "3.0 л"],
-    "5 Series": ["2.0 л", "3.0 л", "4.4 л"],
-    "7 Series": ["3.0 л", "4.4 л", "6.6 л"],
-    "X1": ["1.5 л", "2.0 л"],
-    "X3": ["2.0 л", "3.0 л"],
-    "X4": ["2.0 л", "3.0 л"],
-    "X5": ["2.0 л", "3.0 л", "4.4 л"],
-    "X6": ["3.0 л", "4.4 л"],
-    "X7": ["3.0 л", "4.4 л"],
-    "i4": ["EV"],
-    "i5": ["EV"],
-    "iX": ["EV"]
-  },
-  "Bentley": {
-    "Bentayga": ["3.0 л", "4.0 л", "6.0 л"],
-    "Continental GT": ["4.0 л", "6.0 л"],
-    "Flying Spur": ["2.9 л", "4.0 л", "6.0 л"]
-  },
-  "Cadillac": {
-    "CT4": ["2.0 л", "2.7 л", "3.6 л"],
-    "CT5": ["2.0 л", "3.0 л", "6.2 л"],
-    "Escalade": ["6.2 л"],
-    "XT4": ["2.0 л"],
-    "XT5": ["2.0 л", "3.6 л"],
-    "XT6": ["2.0 л", "3.6 л"]
-  },
-  "Chevrolet": {
-    "Camaro": ["2.0 л", "3.6 л", "6.2 л"],
-    "Colorado": ["2.5 л", "2.8 л", "3.6 л"],
-    "Equinox": ["1.5 л", "2.0 л"],
-    "Malibu": ["1.5 л", "2.0 л"],
-    "Tahoe": ["5.3 л", "6.2 л"],
-    "Traverse": ["3.6 л"],
-    "Trax": ["1.2 л", "1.4 л"]
-  },
-  "Chrysler": {
-    "300": ["3.6 л", "5.7 л", "6.4 л"],
-    "Pacifica": ["3.6 л"]
-  },
-  "Ford": {
-    "Escape": ["1.5 л", "2.0 л", "2.5 л"],
-    "Explorer": ["2.3 л", "3.0 л"],
-    "Expedition": ["3.5 л"],
-    "F-150": ["2.7 л", "3.5 л", "5.0 л"],
-    "Mustang": ["2.3 л", "5.0 л"]
+    "1 Series": ["118i", "120i", "120d"],
+    "2 Series": ["218i", "220i", "220d", "M240i"],
+    "3 Series": ["320i", "320d", "330i", "330e", "M340i"],
+    "4 Series": ["420i", "420d", "430i", "M440i"],
+    "5 Series": ["520i", "520d", "530i", "530e", "540i"],
+    "7 Series": ["730d", "740i", "750e", "760i"],
+    "X1": ["18i", "20i", "18d", "20d"],
+    "X3": ["20i", "20d", "30e", "M40i"],
+    "X4": ["20i", "20d", "M40i"],
+    "X5": ["30d", "40i", "45e", "50e", "M50i"],
+    "X6": ["30d", "40i", "M50i"],
+    "X7": ["30d", "40i", "M60i"],
+    "i4": ["eDrive35", "eDrive40", "M50"],
+    "i5": ["eDrive40", "M60"],
+    "iX": ["xDrive40", "xDrive50", "M60"]
   },
   "Genesis": {
-    "G70": ["2.0 л", "2.2 л", "3.3 л"],
-    "G80": ["2.5 л", "3.5 л", "2.2 л"],
-    "G90": ["3.5 л", "3.5 л Turbo", "5.0 л"],
-    "GV60": ["EV"],
-    "GV70": ["2.5 л", "3.5 л", "2.2 л", "EV"],
-    "GV80": ["2.5 л", "3.5 л", "3.0 л"]
-  },
-  "GMC": {
-    "Acadia": ["2.0 л", "2.5 л", "3.6 л"],
-    "Sierra": ["2.7 л", "3.0 л", "5.3 л", "6.2 л"],
-    "Terrain": ["1.5 л", "2.0 л"],
-    "Yukon": ["5.3 л", "6.2 л"]
-  },
-  "Honda": {
-    "Accord": ["1.5 л", "2.0 л"],
-    "CR-V": ["1.5 л", "2.0 л", "2.4 л"],
-    "Civic": ["1.5 л", "2.0 л"],
-    "Odyssey": ["3.5 л"],
-    "Pilot": ["3.5 л"]
+    "G70": ["2.0T", "2.2 Diesel", "3.3T Sport"],
+    "G80": ["2.5T", "3.5T AWD", "2.2 Diesel"],
+    "G90": ["3.5T", "3.5T e-SC AWD", "5.0 AWD"],
+    "GV60": ["Standard", "Performance AWD"],
+    "GV70": ["2.5T", "3.5T Sport", "2.2 Diesel", "Electrified GV70"],
+    "GV80": ["2.5T", "3.5T AWD", "3.0 Diesel"]
   },
   "Hyundai": {
-    "Accent": ["1.4 л", "1.6 л"],
-    "Avante": ["1.6 л", "2.0 л"],
-    "Azera": ["2.5 л", "3.0 л"],
-    "Grandeur": ["2.5 л", "3.5 л", "3.0 л", "1.6 л"],
-    "Ioniq 5": ["EV"],
-    "Ioniq 6": ["EV"],
-    "Kona": ["1.6 л", "2.0 л", "EV"],
-    "Palisade": ["2.2 л", "3.8 л"],
-    "Santa Fe": ["2.2 л", "2.5 л", "1.6 л"],
-    "Sonata": ["1.6 л", "2.0 л", "2.5 л"],
-    "Staria": ["2.2 л", "3.5 л"],
-    "Tucson": ["1.6 л", "2.0 л", "2.5 л"]
-  },
-  "Infiniti": {
-    "Q50": ["2.0 л", "3.0 л"],
-    "Q60": ["2.0 л", "3.0 л"],
-    "QX50": ["2.0 л"],
-    "QX60": ["3.5 л"],
-    "QX80": ["5.6 л"]
-  },
-  "Jaguar": {
-    "E-Pace": ["2.0 л"],
-    "F-Pace": ["2.0 л", "3.0 л", "5.0 л"],
-    "XF": ["2.0 л", "3.0 л"]
-  },
-  "Jeep": {
-    "Cherokee": ["2.0 л", "2.4 л", "3.2 л"],
-    "Compass": ["1.3 л", "2.0 л", "2.4 л"],
-    "Grand Cherokee": ["2.0 л", "3.6 л", "5.7 л", "6.4 л"],
-    "Wrangler": ["2.0 л", "3.6 л"]
+    "Accent": ["1.4 MPI", "1.6 MPI"],
+    "Avante": ["1.6 Smartstream", "1.6 Hybrid", "2.0 N Line"],
+    "Azera": ["2.5", "3.0 LPG"],
+    "Grandeur": ["2.5 GDi", "3.5 GDi", "1.6 Turbo Hybrid", "3.5 LPG"],
+    "Ioniq 5": ["Standard Range", "Long Range AWD"],
+    "Ioniq 6": ["Standard Range", "Long Range AWD"],
+    "Kona": ["1.6 Turbo", "2.0 MPI", "Electric"],
+    "Palisade": ["2.2 Diesel", "3.8 GDi"],
+    "Santa Fe": ["2.2 Diesel", "2.5 Turbo", "1.6 Turbo Hybrid"],
+    "Sonata": ["1.6 Turbo", "2.0 LPG", "2.5 GDi"],
+    "Staria": ["2.2 Diesel", "3.5 LPG"],
+    "Tucson": ["1.6 Turbo", "2.0 Diesel", "1.6 Hybrid", "2.5 GDi"]
   },
   "Kia": {
-    "Carnival": ["2.2 л", "3.5 л"],
-    "EV6": ["EV"],
-    "K5": ["1.6 л", "2.0 л", "2.5 л"],
-    "K7": ["2.5 л", "3.0 л", "3.3 л"],
-    "K8": ["2.5 л", "3.5 л"],
-    "K9": ["3.3 л", "3.8 л", "5.0 л"],
-    "Mohave": ["3.0 л"],
-    "Morning": ["1.0 л"],
-    "Niro": ["1.6 л", "EV"],
-    "Ray": ["1.0 л", "EV"],
-    "Seltos": ["1.6 л", "2.0 л"],
-    "Sorento": ["2.2 л", "2.5 л", "1.6 л", "3.5 л"],
-    "Soul": ["1.6 л", "2.0 л", "EV"],
-    "Sportage": ["1.6 л", "2.0 л", "2.5 л"],
-    "Stinger": ["2.0 л", "2.2 л", "3.3 л"]
-  },
-  "Land Rover": {
-    "Defender": ["2.0 л", "3.0 л", "5.0 л"],
-    "Discovery": ["2.0 л", "3.0 л"],
-    "Discovery Sport": ["2.0 л"],
-    "Range Rover": ["3.0 л", "4.4 л", "5.0 л"],
-    "Range Rover Sport": ["3.0 л", "4.4 л", "5.0 л"],
-    "Range Rover Velar": ["2.0 л", "3.0 л"]
+    "Carnival": ["2.2 Diesel Prestige", "2.2 Diesel Signature", "3.5 Gasoline Signature"],
+    "EV6": ["Standard Range", "Long Range AWD", "GT-Line", "GT"],
+    "K5": ["1.6 Turbo", "2.0 LPG", "2.0 Hybrid", "2.5 GT"],
+    "K7": ["2.5 GDi", "3.0 LPG", "3.3 GDi"],
+    "K8": ["2.5 GDi", "3.5 GDi", "1.6 Turbo Hybrid", "3.5 LPG"],
+    "K9": ["3.3 Turbo", "3.8 GDi", "5.0 AWD"],
+    "Mohave": ["3.0 Diesel Master", "3.0 Diesel Gravity"],
+    "Morning": ["1.0 MPI", "1.0 Turbo GT-Line"],
+    "Niro": ["1.6 Hybrid", "1.6 Plug-in Hybrid", "EV"],
+    "Ray": ["1.0 MPI", "EV"],
+    "Seltos": ["1.6 Turbo", "2.0 MPI", "1.6 Diesel"],
+    "Sorento": ["2.2 Diesel", "2.5 Turbo", "1.6 Hybrid", "3.5 Gasoline"],
+    "Soul": ["1.6 MPI", "2.0 MPI", "EV"],
+    "Sportage": ["1.6 Turbo", "2.0 Diesel", "1.6 Hybrid", "2.5 Gasoline"],
+    "Stinger": ["2.0 Turbo", "2.2 Diesel", "3.3 Turbo GT"]
   },
   "Lexus": {
-    "ES": ["2.0 л", "2.5 л", "3.5 л"],
-    "GX": ["4.6 л"],
-    "IS": ["2.0 л", "2.5 л", "3.5 л"],
-    "LS": ["3.5 л"],
-    "LX": ["3.5 л", "5.7 л"],
-    "NX": ["2.0 л", "2.5 л"],
-    "RX": ["2.0 л", "2.5 л", "3.5 л"],
-    "UX": ["2.0 л"]
-  },
-  "Lincoln": {
-    "Aviator": ["3.0 л"],
-    "Corsair": ["2.0 л", "2.3 л"],
-    "Navigator": ["3.5 л"]
-  },
-  "Maserati": {
-    "Ghibli": ["2.0 л", "3.0 л", "3.8 л"],
-    "Levante": ["2.0 л", "3.0 л", "3.8 л"],
-    "Quattroporte": ["3.0 л", "3.8 л"]
-  },
-  "Mazda": {
-    "CX-30": ["2.0 л", "2.5 л"],
-    "CX-5": ["2.0 л", "2.5 л"],
-    "CX-9": ["2.5 л"],
-    "Mazda3": ["1.5 л", "2.0 л"],
-    "Mazda6": ["2.0 л", "2.5 л"]
+    "ES": ["250", "300h", "350"],
+    "GX": ["460"],
+    "IS": ["300", "350"],
+    "LS": ["500", "500h"],
+    "LX": ["500d", "600"],
+    "NX": ["250", "350", "350h", "450h+"],
+    "RX": ["350", "350h", "500h"],
+    "UX": ["200", "250h"]
   },
   "Mercedes-Benz": {
-    "A-Class": ["1.3 л", "2.0 л"],
-    "C-Class": ["1.5 л", "2.0 л", "3.0 л"],
-    "CLA": ["1.3 л", "2.0 л"],
-    "CLS": ["2.0 л", "3.0 л"],
-    "E-Class": ["2.0 л", "3.0 л"],
-    "EQE": ["EV"],
-    "EQS": ["EV"],
-    "G-Class": ["3.0 л", "4.0 л"],
-    "GLA": ["1.3 л", "2.0 л"],
-    "GLB": ["1.3 л", "2.0 л"],
-    "GLC": ["2.0 л", "3.0 л"],
-    "GLE": ["2.0 л", "3.0 л", "4.0 л"],
-    "GLS": ["3.0 л", "4.0 л"],
-    "S-Class": ["3.0 л", "4.0 л"]
+    "A-Class": ["A 200", "A 220", "A 250 4MATIC"],
+    "C-Class": ["C 200", "C 220d", "C 300", "C 43 AMG"],
+    "CLA": ["CLA 200", "CLA 250 4MATIC", "CLA 45 AMG"],
+    "CLS": ["CLS 300d", "CLS 450 4MATIC", "CLS 53 AMG"],
+    "E-Class": ["E 220d", "E 300", "E 450 4MATIC", "E 53 AMG"],
+    "EQE": ["EQE 300", "EQE 350+", "EQE 500 4MATIC"],
+    "EQS": ["EQS 450+", "EQS 580 4MATIC"],
+    "G-Class": ["G 350d", "G 400d", "G 500", "G 63 AMG"],
+    "GLA": ["GLA 200", "GLA 220", "GLA 250 4MATIC", "GLA 35 AMG"],
+    "GLB": ["GLB 200", "GLB 220d", "GLB 250 4MATIC", "GLB 35 AMG"],
+    "GLC": ["GLC 220d", "GLC 300", "GLC 300e", "GLC 43 AMG"],
+    "GLE": ["GLE 300d", "GLE 400d", "GLE 450 4MATIC", "GLE 450 AMG Line", "GLE 53 AMG", "GLE 63 AMG"],
+    "GLS": ["GLS 350d", "GLS 400d", "GLS 450", "GLS 580", "GLS 63 AMG"],
+    "S-Class": ["S 350d", "S 400d", "S 450 4MATIC", "S 580 4MATIC", "S 63 AMG"]
   },
   "Mini": {
-    "Clubman": ["1.5 л", "2.0 л"],
-    "Convertible": ["1.5 л", "2.0 л"],
-    "Cooper": ["1.5 л", "2.0 л"],
-    "Countryman": ["1.5 л", "2.0 л"]
-  },
-  "Mitsubishi": {
-    "Outlander": ["2.0 л", "2.4 л", "2.5 л"],
-    "Pajero Sport": ["2.4 л", "3.0 л"]
-  },
-  "Nissan": {
-    "Altima": ["2.0 л", "2.5 л"],
-    "Kicks": ["1.6 л"],
-    "Murano": ["2.5 л", "3.5 л"],
-    "Pathfinder": ["3.5 л"],
-    "Rogue": ["1.5 л", "2.0 л", "2.5 л"],
-    "Sentra": ["1.6 л", "2.0 л"]
+    "Clubman": ["Cooper", "Cooper S", "John Cooper Works"],
+    "Convertible": ["Cooper", "Cooper S"],
+    "Cooper": ["1.5 Turbo", "Cooper S 2.0", "John Cooper Works"],
+    "Countryman": ["Cooper", "Cooper S", "John Cooper Works"]
   },
   "Porsche": {
-    "718 Boxster": ["2.0 л", "2.5 л", "4.0 л"],
-    "718 Cayman": ["2.0 л", "2.5 л", "4.0 л"],
-    "Cayenne": ["3.0 л", "4.0 л"],
-    "Macan": ["2.0 л", "2.9 л", "3.0 л"],
-    "Panamera": ["2.9 л", "3.0 л", "4.0 л"],
-    "Taycan": ["EV"]
-  },
-  "Renault": {
-    "Arkana": ["1.3 л", "1.6 л"],
-    "Koleos": ["2.0 л", "2.5 л"],
-    "QM6": ["2.0 л", "2.5 л"],
-    "SM6": ["1.3 л", "2.0 л"]
-  },
-  "Rolls-Royce": {
-    "Cullinan": ["6.75 л"],
-    "Ghost": ["6.75 л"],
-    "Phantom": ["6.75 л"]
-  },
-  "SsangYong": {
-    "Korando": ["1.5 л", "1.6 л"],
-    "Rexton": ["2.2 л"],
-    "Torres": ["1.5 л"]
-  },
-  "Subaru": {
-    "Forester": ["2.0 л", "2.5 л"],
-    "Outback": ["2.5 л"],
-    "XV": ["2.0 л"]
+    "718 Boxster": ["2.0", "2.5 S", "4.0 GTS"],
+    "718 Cayman": ["2.0", "2.5 S", "4.0 GTS", "GT4"],
+    "Cayenne": ["3.0", "E-Hybrid", "S", "Turbo GT"],
+    "Macan": ["2.0", "S", "GTS"],
+    "Panamera": ["2.9 4", "4S", "Turbo S", "E-Hybrid"],
+    "Taycan": ["RWD", "4S", "Turbo", "Turbo S"]
   },
   "Tesla": {
-    "Model 3": ["EV"],
-    "Model S": ["EV"],
-    "Model X": ["EV"],
-    "Model Y": ["EV"]
+    "Model 3": ["RWD", "Long Range AWD", "Performance"],
+    "Model S": ["Long Range", "Plaid"],
+    "Model X": ["Long Range", "Plaid"],
+    "Model Y": ["RWD", "Long Range AWD", "Performance"]
   },
   "Toyota": {
-    "Alphard": ["2.5 л", "3.5 л"],
-    "Camry": ["2.0 л", "2.5 л", "3.5 л"],
-    "Corolla": ["1.6 л", "1.8 л", "2.0 л"],
-    "Highlander": ["2.4 л", "2.5 л", "3.5 л"],
-    "Land Cruiser": ["3.3 л", "3.5 л", "4.0 л", "4.5 л"],
-    "RAV4": ["2.0 л", "2.5 л"],
-    "Sienna": ["2.5 л", "3.5 л"]
+    "Alphard": ["2.5 Hybrid", "3.5 Executive Lounge"],
+    "Camry": ["2.0", "2.5", "2.5 Hybrid", "3.5 V6"],
+    "Corolla": ["1.6", "1.8 Hybrid", "2.0"],
+    "Highlander": ["2.4 Turbo", "2.5 Hybrid", "3.5 V6"],
+    "Land Cruiser": ["3.3 Diesel", "3.5 Twin Turbo", "4.0"],
+    "RAV4": ["2.0", "2.5", "2.5 Hybrid"],
+    "Sienna": ["2.5 Hybrid", "3.5 V6"]
   },
   "Volkswagen": {
-    "Arteon": ["2.0 л"],
-    "Golf": ["1.4 л", "1.5 л", "2.0 л"],
-    "Jetta": ["1.4 л", "1.5 л", "2.0 л"],
-    "Passat": ["1.4 л", "1.8 л", "2.0 л"],
-    "Tiguan": ["1.4 л", "2.0 л"],
-    "Touareg": ["2.0 л", "3.0 л"]
+    "Arteon": ["2.0 TSI"],
+    "Golf": ["1.4 TSI", "2.0 TDI", "GTI", "R"],
+    "Jetta": ["1.4 TSI", "1.5 TSI", "2.0 TSI"],
+    "Passat": ["1.4 TSI", "2.0 TDI", "2.0 TSI"],
+    "Tiguan": ["1.4 TSI", "2.0 TDI", "2.0 TSI"],
+    "Touareg": ["2.0 TSI", "3.0 TDI", "3.0 TSI"]
   },
   "Volvo": {
-    "S60": ["2.0 л"],
-    "S90": ["2.0 л"],
-    "XC40": ["1.5 л", "2.0 л", "EV"],
-    "XC60": ["2.0 л"],
-    "XC90": ["2.0 л"]
+    "S60": ["B4", "B5", "T8 Recharge"],
+    "S90": ["B5", "T8 Recharge"],
+    "XC40": ["B3", "B4", "Recharge"],
+    "XC60": ["B5", "B6", "T8 Recharge"],
+    "XC90": ["B5", "B6", "T8 Recharge"]
   }
 };
 
@@ -366,7 +241,7 @@ function fillModelSelect(selectEl, brand, placeholder = "Сначала выбе
   });
 }
 
-function fillEngineSelectByModel(selectEl, brand, model, placeholder = "Сначала выберите модель") {
+function fillModificationSelect(selectEl, brand, model, placeholder = "Сначала выберите модель") {
   if (!selectEl) return;
   selectEl.innerHTML = "";
 
@@ -377,13 +252,13 @@ function fillEngineSelectByModel(selectEl, brand, model, placeholder = "Снач
 
   const firstOption = document.createElement("option");
   firstOption.value = "";
-  firstOption.textContent = "Выберите объём";
+  firstOption.textContent = "Выберите модификацию";
   selectEl.appendChild(firstOption);
 
-  CAR_DATA[brand][model].forEach((engine) => {
+  CAR_DATA[brand][model].forEach((modification) => {
     const option = document.createElement("option");
-    option.value = engine;
-    option.textContent = engine;
+    option.value = modification;
+    option.textContent = modification;
     selectEl.appendChild(option);
   });
 }
@@ -393,8 +268,7 @@ fillBrandSelect(partsBrandSelect, "Выберите марку");
 
 fillModelSelect(modelSelect, "");
 fillModelSelect(partsModelSelect, "");
-
-fillEngineSelectByModel(engineVolumeSelect, "", "");
+fillModificationSelect(modificationSelect, "", "");
 
 fillYearSelect(yearFromSelect, "Выберите год");
 fillYearSelect(partsYearSelect, "Выберите год");
@@ -403,11 +277,11 @@ updateRangeValue(mileageInput, mileageValue);
 
 brandSelect.addEventListener("change", () => {
   fillModelSelect(modelSelect, brandSelect.value);
-  fillEngineSelectByModel(engineVolumeSelect, "", "");
+  fillModificationSelect(modificationSelect, "", "");
 });
 
 modelSelect.addEventListener("change", () => {
-  fillEngineSelectByModel(engineVolumeSelect, brandSelect.value, modelSelect.value);
+  fillModificationSelect(modificationSelect, brandSelect.value, modelSelect.value);
 });
 
 partsBrandSelect.addEventListener("change", () => {
@@ -498,7 +372,7 @@ form.addEventListener("submit", async (e) => {
     fillBrandSelect(partsBrandSelect, "Выберите марку");
     fillModelSelect(modelSelect, "");
     fillModelSelect(partsModelSelect, "");
-    fillEngineSelectByModel(engineVolumeSelect, "", "");
+    fillModificationSelect(modificationSelect, "", "");
 
     fillYearSelect(yearFromSelect, "Выберите год");
     fillYearSelect(partsYearSelect, "Выберите год");
