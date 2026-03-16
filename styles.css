@@ -3,26 +3,26 @@
 }
 
 :root {
-  --bg-1: #030811;
+  --bg-1: #030812;
   --bg-2: #06111f;
-  --bg-3: #08172a;
-
-  --card: rgba(10, 18, 33, 0.55);
-  --card-strong: rgba(12, 22, 39, 0.72);
-
-  --stroke: rgba(255, 255, 255, 0.09);
-  --stroke-strong: rgba(255, 255, 255, 0.18);
+  --bg-3: #09192f;
 
   --text: #f3f7ff;
-  --muted: #9fb2cd;
-  --muted-2: #7e90aa;
+  --muted: #9eb2cf;
+  --muted-2: #7d90aa;
+
+  --stroke: rgba(255, 255, 255, 0.10);
+  --stroke-strong: rgba(255, 255, 255, 0.18);
+
+  --glass-1: rgba(16, 27, 45, 0.52);
+  --glass-2: rgba(10, 18, 33, 0.72);
 
   --blue-1: #2a7de0;
-  --blue-2: #58b7ff;
-  --blue-glow: rgba(88, 183, 255, 0.24);
+  --blue-2: #5abaff;
+  --blue-glow: rgba(90, 186, 255, 0.24);
 
-  --success: #7ae6a4;
-  --error: #ff9f9f;
+  --success: #7ee1a0;
+  --error: #ff9c9c;
 }
 
 html,
@@ -33,8 +33,8 @@ body {
   font-family: "Inter", Arial, sans-serif;
   color: var(--text);
   background:
-    radial-gradient(circle at 8% 16%, rgba(48, 131, 255, 0.22), transparent 0 22%),
-    radial-gradient(circle at 85% 84%, rgba(78, 194, 255, 0.14), transparent 0 18%),
+    radial-gradient(circle at 8% 16%, rgba(49, 138, 255, 0.22), transparent 0 22%),
+    radial-gradient(circle at 84% 84%, rgba(92, 195, 255, 0.14), transparent 0 18%),
     linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 48%, var(--bg-3) 100%);
 }
 
@@ -52,36 +52,37 @@ body {
 .bg-glow {
   position: fixed;
   border-radius: 999px;
-  filter: blur(95px);
+  filter: blur(100px);
   pointer-events: none;
   z-index: 0;
 }
 
 .bg-glow-1 {
-  width: 320px;
-  height: 320px;
+  width: 340px;
+  height: 340px;
   background: rgba(60, 145, 255, 0.22);
-  top: -60px;
-  left: -90px;
+  top: -70px;
+  left: -100px;
 }
 
 .bg-glow-2 {
-  width: 380px;
-  height: 380px;
-  background: rgba(86, 198, 255, 0.14);
-  right: -100px;
-  bottom: -80px;
+  width: 420px;
+  height: 420px;
+  background: rgba(90, 190, 255, 0.14);
+  right: -120px;
+  bottom: -100px;
 }
 
 .card {
   position: relative;
   z-index: 1;
-  max-width: 840px;
+  max-width: 860px;
   margin: 0 auto;
   padding: 32px;
   border-radius: 34px;
+  overflow: hidden;
   background:
-    linear-gradient(180deg, rgba(14, 25, 45, 0.54) 0%, rgba(8, 17, 31, 0.70) 100%);
+    linear-gradient(180deg, rgba(15, 26, 46, 0.56) 0%, rgba(8, 17, 31, 0.74) 100%);
   border: 1px solid rgba(255, 255, 255, 0.10);
   backdrop-filter: blur(24px);
   box-shadow:
@@ -90,55 +91,84 @@ body {
     inset 0 -1px 0 rgba(255, 255, 255, 0.02);
 }
 
-.card::before {
-  content: "";
+.card-highlight {
   position: absolute;
   inset: 0;
-  border-radius: inherit;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.00) 18%),
-    radial-gradient(circle at top center, rgba(94, 182, 255, 0.08), transparent 38%);
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.00) 16%),
+    radial-gradient(circle at top center, rgba(101, 184, 255, 0.12), transparent 36%);
+}
+
+.hero {
+  position: relative;
+  margin-bottom: 24px;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 28px;
+  gap: 18px;
 }
 
 .brand-badge {
-  width: 70px;
-  height: 70px;
-  border-radius: 22px;
+  width: 76px;
+  height: 76px;
+  border-radius: 24px;
   display: grid;
   place-items: center;
+  flex-shrink: 0;
   background:
-    linear-gradient(135deg, rgba(40, 111, 214, 0.95), rgba(88, 183, 255, 0.98));
+    linear-gradient(135deg, rgba(42, 118, 224, 0.96), rgba(90, 186, 255, 0.98));
   color: #fff;
-  font-size: 21px;
+  font-size: 22px;
   font-weight: 800;
   letter-spacing: 1px;
   box-shadow:
-    0 16px 36px rgba(88, 183, 255, 0.25),
+    0 18px 40px rgba(90, 186, 255, 0.26),
     inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.brand-copy {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-topline {
+  margin-bottom: 8px;
+}
+
+.brand-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: #dbe8fb;
+  text-transform: uppercase;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
 .brand h1 {
   margin: 0;
   font-size: 30px;
-  line-height: 1.03;
+  line-height: 1.02;
   font-weight: 800;
   letter-spacing: 0.4px;
 }
 
 .brand p {
-  margin: 7px 0 0;
+  margin: 8px 0 0;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.45;
-  letter-spacing: 0.1px;
 }
 
 .tabs {
@@ -149,12 +179,12 @@ body {
 
 .tab {
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.11);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.035));
   color: #e8f0fc;
-  border-radius: 20px;
-  padding: 15px 22px;
+  border-radius: 22px;
+  padding: 15px 24px;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -169,17 +199,17 @@ body {
   transform: translateY(-1px);
   border-color: rgba(255, 255, 255, 0.18);
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.045));
+    linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
 }
 
 .tab.active {
-  border-color: rgba(109, 194, 255, 0.42);
+  border-color: rgba(110, 194, 255, 0.42);
   background:
-    linear-gradient(180deg, rgba(60, 141, 255, 0.28), rgba(88, 183, 255, 0.10));
+    linear-gradient(180deg, rgba(55, 137, 255, 0.26), rgba(90, 186, 255, 0.10));
   box-shadow:
-    0 12px 28px rgba(88, 183, 255, 0.16),
+    0 14px 30px rgba(90, 186, 255, 0.18),
     inset 0 1px 0 rgba(255,255,255,0.10),
-    inset 0 0 0 1px rgba(255,255,255,0.04);
+    inset 0 0 0 1px rgba(255,255,255,0.03);
 }
 
 .form {
@@ -202,7 +232,7 @@ body {
 
 label {
   font-size: 13px;
-  color: #adc0d9;
+  color: #afc1da;
   font-weight: 600;
   letter-spacing: 0.15px;
 }
@@ -213,7 +243,7 @@ textarea {
   border-radius: 22px;
   border: 1px solid rgba(255, 255, 255, 0.09);
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.060), rgba(255,255,255,0.028));
+    linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.03));
   color: var(--text);
   padding: 16px 18px;
   font-size: 15px;
@@ -223,7 +253,7 @@ textarea {
     inset 0 1px 0 rgba(255,255,255,0.04),
     inset 0 -1px 0 rgba(0,0,0,0.18),
     0 6px 18px rgba(0,0,0,0.08);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, transform 0.15s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 input::placeholder,
@@ -235,16 +265,16 @@ input:focus,
 textarea:focus {
   border-color: rgba(103, 191, 255, 0.42);
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.035));
+    linear-gradient(180deg, rgba(255,255,255,0.085), rgba(255,255,255,0.04));
   box-shadow:
-    0 0 0 3px rgba(88, 183, 255, 0.12),
-    0 0 24px rgba(88, 183, 255, 0.09),
+    0 0 0 3px rgba(90, 186, 255, 0.12),
+    0 0 24px rgba(90, 186, 255, 0.10),
     inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 textarea {
   resize: vertical;
-  min-height: 132px;
+  min-height: 136px;
 }
 
 .hidden {
@@ -263,7 +293,7 @@ textarea {
   background:
     linear-gradient(135deg, var(--blue-1), var(--blue-2));
   box-shadow:
-    0 18px 38px var(--blue-glow),
+    0 20px 40px var(--blue-glow),
     inset 0 1px 0 rgba(255,255,255,0.20);
   transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
@@ -271,7 +301,7 @@ textarea {
 .submit-btn:hover {
   transform: translateY(-1px);
   box-shadow:
-    0 24px 46px rgba(88, 183, 255, 0.30),
+    0 24px 48px rgba(90, 186, 255, 0.30),
     inset 0 1px 0 rgba(255,255,255,0.20);
 }
 
@@ -311,13 +341,17 @@ textarea {
   }
 
   .brand-badge {
-    width: 60px;
-    height: 60px;
+    width: 62px;
+    height: 62px;
     border-radius: 18px;
   }
 
   .brand h1 {
     font-size: 24px;
+  }
+
+  .brand p {
+    font-size: 14px;
   }
 
   .grid {
