@@ -19,6 +19,9 @@ const budgetInput = document.getElementById("budget");
 const autoMileageInput = document.getElementById("autoMileage");
 const fuelChips = document.querySelectorAll(".fuel-chip");
 
+const fullNameInput = document.getElementById("fullName");
+const partsFullNameInput = document.getElementById("partsFullName");
+
 const autoCarModelInput = document.getElementById("autoCarModel");
 const autoYearInput = document.getElementById("autoYear");
 const autoRegionInput = document.getElementById("autoRegion");
@@ -30,9 +33,6 @@ const partsYearInput = document.getElementById("partsYear");
 const partsPhoneInput = document.getElementById("partsPhone");
 const partNameInput = document.getElementById("partName");
 const partsCommentInput = document.getElementById("partsComment");
-
-const nameInput = document.getElementById("name");
-const partsNameInput = document.getElementById("partsName");
 
 function setStatus(text, type = "") {
   statusEl.textContent = text;
@@ -96,8 +96,15 @@ function clearErrors() {
   });
 }
 
-function isPhoneValid(value) {
-  const digits = onlyDigits(value);
+function isContactValid(value) {
+  const trimmed = String(value || "").trim();
+  if (!trimmed) return false;
+
+  if (trimmed.startsWith("@")) {
+    return trimmed.length >= 4;
+  }
+
+  const digits = onlyDigits(trimmed);
   return digits.length >= 11;
 }
 
@@ -122,6 +129,12 @@ function scrollToFirstError() {
 function validateAutoForm() {
   clearErrors();
 
+  if (!fullNameInput.value.trim()) {
+    markError(fullNameInput, "Укажите ФИО.");
+    scrollToFirstError();
+    return false;
+  }
+
   if (!autoCarModelInput.value.trim()) {
     markError(autoCarModelInput, "Укажите марку и модель автомобиля.");
     scrollToFirstError();
@@ -129,13 +142,13 @@ function validateAutoForm() {
   }
 
   if (!autoPhoneInput.value.trim()) {
-    markError(autoPhoneInput, "Укажите телефон для связи.");
+    markError(autoPhoneInput, "Укажите телефон или Telegram.");
     scrollToFirstError();
     return false;
   }
 
-  if (!isPhoneValid(autoPhoneInput.value)) {
-    markError(autoPhoneInput, "Проверьте телефон. Нужно минимум 11 цифр.");
+  if (!isContactValid(autoPhoneInput.value)) {
+    markError(autoPhoneInput, "Укажите корректный телефон или @username.");
     scrollToFirstError();
     return false;
   }
@@ -152,6 +165,12 @@ function validateAutoForm() {
 function validatePartsForm() {
   clearErrors();
 
+  if (!partsFullNameInput.value.trim()) {
+    markError(partsFullNameInput, "Укажите ФИО.");
+    scrollToFirstError();
+    return false;
+  }
+
   if (!partsCarModelInput.value.trim()) {
     markError(partsCarModelInput, "Укажите марку и модель автомобиля.");
     scrollToFirstError();
@@ -165,13 +184,13 @@ function validatePartsForm() {
   }
 
   if (!partsPhoneInput.value.trim()) {
-    markError(partsPhoneInput, "Укажите телефон для связи.");
+    markError(partsPhoneInput, "Укажите телефон или Telegram.");
     scrollToFirstError();
     return false;
   }
 
-  if (!isPhoneValid(partsPhoneInput.value)) {
-    markError(partsPhoneInput, "Проверьте телефон. Нужно минимум 11 цифр.");
+  if (!isContactValid(partsPhoneInput.value)) {
+    markError(partsPhoneInput, "Укажите корректный телефон или @username.");
     scrollToFirstError();
     return false;
   }
@@ -190,7 +209,13 @@ function validatePartsForm() {
 }
 
 function formatPhoneRU(value) {
-  let digits = onlyDigits(value);
+  const raw = String(value || "").trim();
+
+  if (raw.startsWith("@")) {
+    return raw;
+  }
+
+  let digits = onlyDigits(raw);
 
   if (!digits) return "";
 
@@ -206,18 +231,10 @@ function formatPhoneRU(value) {
 
   let result = "+7";
 
-  if (digits.length > 1) {
-    result += " " + digits.slice(1, 4);
-  }
-  if (digits.length >= 5) {
-    result += " " + digits.slice(4, 7);
-  }
-  if (digits.length >= 8) {
-    result += "-" + digits.slice(7, 9);
-  }
-  if (digits.length >= 10) {
-    result += "-" + digits.slice(9, 11);
-  }
+  if (digits.length > 1) result += " " + digits.slice(1, 4);
+  if (digits.length >= 5) result += " " + digits.slice(4, 7);
+  if (digits.length >= 8) result += "-" + digits.slice(7, 9);
+  if (digits.length >= 10) result += "-" + digits.slice(9, 11);
 
   return result;
 }
@@ -226,12 +243,21 @@ function attachPhoneMask(input) {
   if (!input) return;
 
   input.addEventListener("input", (e) => {
+    const value = e.target.value.trim();
+
+    if (value.startsWith("@")) {
+      e.target.value = value;
+      clearError(input);
+      return;
+    }
+
     e.target.value = formatPhoneRU(e.target.value);
     clearError(input);
   });
 
   input.addEventListener("focus", (e) => {
-    if (!e.target.value.trim()) {
+    const value = e.target.value.trim();
+    if (!value) {
       e.target.value = "+7";
     }
   });
@@ -245,8 +271,7 @@ function attachPhoneMask(input) {
 
 function getTelegramDisplayName(user) {
   if (!user) return "";
-  const fullName = [user.first_name, user.last_name].filter(Boolean).join(" ").trim();
-  return fullName || "";
+  return [user.first_name, user.last_name].filter(Boolean).join(" ").trim();
 }
 
 function getTelegramContactFallback(user) {
@@ -262,12 +287,12 @@ function autofillFromTelegram() {
   const displayName = getTelegramDisplayName(user);
   const fallbackContact = getTelegramContactFallback(user);
 
-  if (nameInput && !nameInput.value.trim() && displayName) {
-    nameInput.value = displayName;
+  if (fullNameInput && !fullNameInput.value.trim() && displayName) {
+    fullNameInput.value = displayName;
   }
 
-  if (partsNameInput && !partsNameInput.value.trim() && displayName) {
-    partsNameInput.value = displayName;
+  if (partsFullNameInput && !partsFullNameInput.value.trim() && displayName) {
+    partsFullNameInput.value = displayName;
   }
 
   if (autoPhoneInput && !autoPhoneInput.value.trim() && fallbackContact) {
@@ -294,6 +319,8 @@ fuelChips.forEach((chip) => {
 });
 
 [
+  fullNameInput,
+  partsFullNameInput,
   autoCarModelInput,
   autoYearInput,
   autoRegionInput,
@@ -305,9 +332,7 @@ fuelChips.forEach((chip) => {
   partNameInput,
   partsCommentInput,
   budgetInput,
-  autoMileageInput,
-  nameInput,
-  partsNameInput
+  autoMileageInput
 ].forEach((input) => {
   if (!input) return;
   input.addEventListener("input", () => clearError(input));
