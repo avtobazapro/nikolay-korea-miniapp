@@ -31,6 +31,9 @@ const partsPhoneInput = document.getElementById("partsPhone");
 const partNameInput = document.getElementById("partName");
 const partsCommentInput = document.getElementById("partsComment");
 
+const nameInput = document.getElementById("name");
+const partsNameInput = document.getElementById("partsName");
+
 function setStatus(text, type = "") {
   statusEl.textContent = text;
   statusEl.className = "status";
@@ -95,7 +98,7 @@ function clearErrors() {
 
 function isPhoneValid(value) {
   const digits = onlyDigits(value);
-  return digits.length >= 10;
+  return digits.length >= 11;
 }
 
 function isYearRangeValid(value) {
@@ -132,7 +135,7 @@ function validateAutoForm() {
   }
 
   if (!isPhoneValid(autoPhoneInput.value)) {
-    markError(autoPhoneInput, "Проверьте телефон. Нужно минимум 10 цифр.");
+    markError(autoPhoneInput, "Проверьте телефон. Нужно минимум 11 цифр.");
     scrollToFirstError();
     return false;
   }
@@ -168,7 +171,7 @@ function validatePartsForm() {
   }
 
   if (!isPhoneValid(partsPhoneInput.value)) {
-    markError(partsPhoneInput, "Проверьте телефон. Нужно минимум 10 цифр.");
+    markError(partsPhoneInput, "Проверьте телефон. Нужно минимум 11 цифр.");
     scrollToFirstError();
     return false;
   }
@@ -184,6 +187,96 @@ function validatePartsForm() {
   }
 
   return true;
+}
+
+function formatPhoneRU(value) {
+  let digits = onlyDigits(value);
+
+  if (!digits) return "";
+
+  if (digits.startsWith("8")) {
+    digits = "7" + digits.slice(1);
+  }
+
+  if (!digits.startsWith("7")) {
+    digits = "7" + digits;
+  }
+
+  digits = digits.slice(0, 11);
+
+  let result = "+7";
+
+  if (digits.length > 1) {
+    result += " " + digits.slice(1, 4);
+  }
+  if (digits.length >= 5) {
+    result += " " + digits.slice(4, 7);
+  }
+  if (digits.length >= 8) {
+    result += "-" + digits.slice(7, 9);
+  }
+  if (digits.length >= 10) {
+    result += "-" + digits.slice(9, 11);
+  }
+
+  return result;
+}
+
+function attachPhoneMask(input) {
+  if (!input) return;
+
+  input.addEventListener("input", (e) => {
+    e.target.value = formatPhoneRU(e.target.value);
+    clearError(input);
+  });
+
+  input.addEventListener("focus", (e) => {
+    if (!e.target.value.trim()) {
+      e.target.value = "+7";
+    }
+  });
+
+  input.addEventListener("blur", (e) => {
+    if (e.target.value.trim() === "+7") {
+      e.target.value = "";
+    }
+  });
+}
+
+function getTelegramDisplayName(user) {
+  if (!user) return "";
+  const fullName = [user.first_name, user.last_name].filter(Boolean).join(" ").trim();
+  return fullName || "";
+}
+
+function getTelegramContactFallback(user) {
+  if (!user) return "";
+  if (user.username) return `@${user.username}`;
+  return "";
+}
+
+function autofillFromTelegram() {
+  const user = tg?.initDataUnsafe?.user;
+  if (!user) return;
+
+  const displayName = getTelegramDisplayName(user);
+  const fallbackContact = getTelegramContactFallback(user);
+
+  if (nameInput && !nameInput.value.trim() && displayName) {
+    nameInput.value = displayName;
+  }
+
+  if (partsNameInput && !partsNameInput.value.trim() && displayName) {
+    partsNameInput.value = displayName;
+  }
+
+  if (autoPhoneInput && !autoPhoneInput.value.trim() && fallbackContact) {
+    autoPhoneInput.value = fallbackContact;
+  }
+
+  if (partsPhoneInput && !partsPhoneInput.value.trim() && fallbackContact) {
+    partsPhoneInput.value = fallbackContact;
+  }
 }
 
 tabs.forEach((tab) => {
@@ -212,11 +305,16 @@ fuelChips.forEach((chip) => {
   partNameInput,
   partsCommentInput,
   budgetInput,
-  autoMileageInput
+  autoMileageInput,
+  nameInput,
+  partsNameInput
 ].forEach((input) => {
   if (!input) return;
   input.addEventListener("input", () => clearError(input));
 });
+
+attachPhoneMask(autoPhoneInput);
+attachPhoneMask(partsPhoneInput);
 
 budgetInput.addEventListener("input", (e) => {
   const digits = onlyDigits(e.target.value);
@@ -295,6 +393,8 @@ form.addEventListener("submit", async (e) => {
     const firstChip = document.querySelector('.fuel-chip[data-fuel="Дизель"]');
     if (firstChip) firstChip.classList.add("active");
 
+    autofillFromTelegram();
+
     if (tg?.HapticFeedback?.notificationOccurred) {
       tg.HapticFeedback.notificationOccurred("success");
     }
@@ -305,3 +405,5 @@ form.addEventListener("submit", async (e) => {
     submitBtn.disabled = false;
   }
 });
+
+autofillFromTelegram();
