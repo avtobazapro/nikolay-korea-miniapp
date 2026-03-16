@@ -40,6 +40,17 @@
 
         <div id="autoFields">
           <div class="field">
+            <label for="fullName">ФИО</label>
+            <input
+              id="fullName"
+              name="fullName"
+              type="text"
+              placeholder="Например: Николай Иванов"
+              required
+            />
+          </div>
+
+          <div class="field">
             <label for="autoCarModel">Марка и модель</label>
             <input
               id="autoCarModel"
@@ -96,12 +107,12 @@
             </div>
 
             <div class="field">
-              <label for="autoPhone">Телефон для связи</label>
+              <label for="autoPhone">Телефон или Telegram</label>
               <input
                 id="autoPhone"
                 name="autoPhone"
                 type="text"
-                placeholder="Например: +7 999 123-45-67"
+                placeholder="Например: +7 999 123-45-67 или @username"
                 required
               />
             </div>
@@ -129,11 +140,22 @@
           </div>
 
           <div class="helper-text">
-            Можно указать телефон или удобное время для связи — я свяжусь с вами в Telegram или по телефону.
+            Можно указать телефон или Telegram — я свяжусь с вами удобным способом.
           </div>
         </div>
 
         <div id="partsFields" class="hidden">
+          <div class="field">
+            <label for="partsFullName">ФИО</label>
+            <input
+              id="partsFullName"
+              name="partsFullName"
+              type="text"
+              placeholder="Например: Николай Иванов"
+              required
+            />
+          </div>
+
           <div class="field">
             <label for="partsCarModel">Марка и модель авто</label>
             <input
@@ -141,6 +163,7 @@
               name="partsCarModel"
               type="text"
               placeholder="Например: Kia Carnival 2.2D, Hyundai Solaris"
+              required
             />
           </div>
 
@@ -173,6 +196,7 @@
               name="partName"
               type="text"
               placeholder="Например: передний бампер, левая фара, двигатель"
+              required
             />
           </div>
 
@@ -198,12 +222,13 @@
             </div>
 
             <div class="field">
-              <label for="partsPhone">Телефон для связи</label>
+              <label for="partsPhone">Телефон или Telegram</label>
               <input
                 id="partsPhone"
                 name="partsPhone"
                 type="text"
-                placeholder="Например: +7 999 123-45-67"
+                placeholder="Например: +7 999 123-45-67 или @username"
+                required
               />
             </div>
           </div>
