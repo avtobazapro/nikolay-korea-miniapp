@@ -1,0 +1,8 @@
+{
+  "name": "nikolay-korea-miniapp",
+  "main": "worker.js",
+  "compatibility_date": "2026-03-16",
+  "assets": {
+    "directory": "."
+  }
+}
