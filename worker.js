@@ -9,13 +9,15 @@ export default {
         const botToken = env.TELEGRAM_BOT_TOKEN;
         const chatId = env.TELEGRAM_CHAT_ID;
 
+        const sheetsWebhookUrl = "https://script.google.com/macros/s/AKfycbxeqeSiXWtGiNoABZ9iMbgBh3kd0rhRuGLojiD2l96ahpGsGjLfLudx_LKeCjFcCLFk8Q/exec";
+
         if (!botToken || !chatId) {
           return Response.json({ error: "ENV_NOT_FOUND" }, { status: 500 });
         }
 
         const formType = String(form.get("formType") || "");
 
-        const fullName = String(form.get("fullName") || "—");
+        const fullName = String(form.get("fullName") || form.get("partsFullName") || "—");
         const autoCarModel = String(form.get("autoCarModel") || "—");
         const autoYear = String(form.get("autoYear") || "—");
         const autoMileage = String(form.get("autoMileage") || "—");
@@ -25,7 +27,7 @@ export default {
         const budget = String(form.get("budget") || "—");
         const comment = String(form.get("comment") || "—");
 
-        const partsFullName = String(form.get("partsFullName") || "—");
+        const partsFullName = String(form.get("partsFullName") || form.get("fullName") || "—");
         const partsCarModel = String(form.get("partsCarModel") || "—");
         const partsYear = String(form.get("partsYear") || "—");
         const vin = String(form.get("vin") || "—");
@@ -45,20 +47,26 @@ export default {
         let telegramUserText = "";
         let userReplyChatId = null;
 
+        let telegramName = "";
+        let telegramUsername = "";
+        let telegramUserId = "";
+
         const telegramUserRaw = form.get("telegramUser");
         if (telegramUserRaw) {
           try {
             const tgUser = JSON.parse(String(telegramUserRaw));
-            const tgName = [tgUser.first_name, tgUser.last_name].filter(Boolean).join(" ") || "—";
-            const username = tgUser.username ? `@${tgUser.username}` : "—";
-            const userId = tgUser.id ? String(tgUser.id) : null;
+            telegramName = [tgUser.first_name, tgUser.last_name].filter(Boolean).join(" ").trim();
+            telegramUsername = tgUser.username ? `@${tgUser.username}` : "";
+            telegramUserId = tgUser.id ? String(tgUser.id) : "";
 
-            if (userId) userReplyChatId = userId;
+            if (telegramUserId) {
+              userReplyChatId = telegramUserId;
+            }
 
             telegramUserText =
-              "\n\nTelegram user: " + tgName +
-              "\nUsername: " + username +
-              "\nUser ID: " + (userId || "—");
+              "\n\nTelegram user: " + (telegramName || "—") +
+              "\nUsername: " + (telegramUsername || "—") +
+              "\nUser ID: " + (telegramUserId || "—");
           } catch (_) {}
         }
 
@@ -117,6 +125,29 @@ export default {
               );
             }
           }
+
+          await fetch(sheetsWebhookUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              formType: "Автозапчасти",
+              fullName: partsFullName,
+              carModel: partsCarModel,
+              year: partsYear,
+              mileage: "",
+              fuelType: "",
+              region: partsRegion,
+              contact: partsPhone,
+              budget: "",
+              vin: vin,
+              partName: partName,
+              article: article,
+              comment: partsComment,
+              telegramName: telegramName,
+              telegramUsername: telegramUsername,
+              telegramUserId: telegramUserId
+            })
+          });
         } else {
           const text =
             "🚘 Новая заявка на подбор авто\n\n" +
@@ -138,7 +169,7 @@ export default {
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 chat_id: String(chatId),
-                text
+                text: text
               })
             }
           );
@@ -151,6 +182,29 @@ export default {
               { status: 500 }
             );
           }
+
+          await fetch(sheetsWebhookUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              formType: "Подбор авто",
+              fullName: fullName,
+              carModel: autoCarModel,
+              year: autoYear,
+              mileage: autoMileage,
+              fuelType: fuelType,
+              region: autoRegion,
+              contact: autoPhone,
+              budget: budget,
+              vin: "",
+              partName: "",
+              article: "",
+              comment: comment,
+              telegramName: telegramName,
+              telegramUsername: telegramUsername,
+              telegramUserId: telegramUserId
+            })
+          });
         }
 
         if (userReplyChatId) {
