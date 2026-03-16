@@ -19,17 +19,16 @@ export default {
 
         const brand = String(form.get("brand") || "—");
         const model = String(form.get("model") || "—");
+        const modification = String(form.get("modification") || "—");
         const yearFrom = String(form.get("yearFrom") || "—");
         const budget = String(form.get("budget") || "—");
-        const engineVolume = String(form.get("engineVolume") || "—");
         const mileage = String(form.get("mileage") || "—");
+        const fuelType = String(form.get("fuelType") || "—");
         const comment = String(form.get("comment") || "—");
 
         const partsBrand = String(form.get("partsBrand") || "—");
         const partsModel = String(form.get("partsModel") || "—");
         const partsYear = String(form.get("partsYear") || "—");
-        const partsEngineVolume = String(form.get("partsEngineVolume") || "—");
-        const partsMileage = String(form.get("partsMileage") || "—");
         const vin = String(form.get("vin") || "—");
         const partName = String(form.get("partName") || "—");
         const article = String(form.get("article") || "—");
@@ -73,8 +72,6 @@ export default {
             "Марка: " + partsBrand + "\n" +
             "Модель: " + partsModel + "\n" +
             "Год: " + partsYear + "\n" +
-            "Объём двигателя: " + partsEngineVolume + "\n" +
-            "Пробег авто: " + partsMileage + "\n" +
             "VIN: " + vin + "\n" +
             "Деталь: " + partName + "\n" +
             "Артикул: " + article + "\n" +
@@ -132,10 +129,11 @@ export default {
             "Контакт: " + phone + "\n" +
             "Марка: " + brand + "\n" +
             "Модель: " + model + "\n" +
+            "Модификация: " + modification + "\n" +
             "Год: " + yearFrom + "\n" +
             "Бюджет: " + budget + "\n" +
-            "Объём двигателя: " + engineVolume + "\n" +
             "Пробег до: " + mileage + "\n" +
+            "Топливо: " + fuelType + "\n" +
             "Пожелания: " + comment +
             telegramUserText;
 
