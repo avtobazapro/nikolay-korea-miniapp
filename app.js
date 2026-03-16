@@ -46,41 +46,16 @@ form.addEventListener("submit", async (e) => {
   setStatus("Отправляем заявку...");
   submitBtn.disabled = true;
 
-  const formData = new FormData(form);
-
-  const payload = {
-    formType: formData.get("formType") || "",
-    name: formData.get("name") || "",
-    phone: formData.get("phone") || "",
-
-    // Авто
-    brand: formData.get("brand") || "",
-    model: formData.get("model") || "",
-    yearFrom: formData.get("yearFrom") || "",
-    budget: formData.get("budget") || "",
-    engineVolume: formData.get("engineVolume") || "",
-    mileage: formData.get("mileage") || "",
-    comment: formData.get("comment") || "",
-
-    // Запчасти
-    partsBrand: formData.get("partsBrand") || "",
-    partsModel: formData.get("partsModel") || "",
-    partsYear: formData.get("partsYear") || "",
-    vin: formData.get("vin") || "",
-    partName: formData.get("partName") || "",
-    article: formData.get("article") || "",
-    partsComment: formData.get("partsComment") || "",
-
-    telegramUser: tg?.initDataUnsafe?.user || null
-  };
-
   try {
+    const formData = new FormData(form);
+
+    if (tg?.initDataUnsafe?.user) {
+      formData.append("telegramUser", JSON.stringify(tg.initDataUnsafe.user));
+    }
+
     const response = await fetch("/api/send-lead", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
+      body: formData
     });
 
     const result = await response.json();
