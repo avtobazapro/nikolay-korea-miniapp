@@ -11,59 +11,51 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-  <div class="app">
-    <div class="bg-glow bg-glow-1"></div>
-    <div class="bg-glow bg-glow-2"></div>
-
-    <main class="card">
-      <div class="card-highlight"></div>
-
-      <section class="hero">
-        <div class="hero-left">
-          <div class="brand">
-            <div class="brand-badge">NK</div>
-            <div class="brand-copy">
-              <div class="brand-topline">
-                <span class="brand-chip">KOREA · AUTO & PARTS</span>
-              </div>
-              <h1>NIKOLAY KOREA</h1>
-              <p>Подбор автомобилей и автозапчастей из Южной Кореи</p>
-            </div>
-          </div>
+  <div class="app-shell">
+    <main class="miniapp-card">
+      <header class="miniapp-header">
+        <div class="brand-left">
+          <div class="brand-name">NIKOLAY KOREA</div>
+          <div class="brand-sub">KOREA · PREMIUM</div>
         </div>
+
+        <div class="brand-badge">
+          <span class="badge-dot"></span>
+          Мини-анкета
+        </div>
+      </header>
+
+      <section class="miniapp-intro">
+        Подбор автомобилей и автозапчастей из Южной Кореи. Выберите нужную вкладку и заполните форму.
       </section>
 
       <div class="tabs">
         <button class="tab active" type="button" data-tab="auto">Подбор авто</button>
-        <button class="tab" type="button" data-tab="parts">Автозапчасти</button>
+        <button class="tab" type="button" data-tab="parts">Авто запчасти</button>
       </div>
 
       <form id="leadForm" class="form">
         <input type="hidden" id="formType" name="formType" value="Подбор авто" />
 
-        <div class="grid">
+        <div id="autoFields">
           <div class="field">
             <label for="name">Ваше имя</label>
             <input id="name" name="name" type="text" placeholder="Например: Николай" required />
           </div>
 
           <div class="field">
-            <label for="phone">Телефон / Telegram</label>
-            <input id="phone" name="phone" type="text" placeholder="+7... или @username" required />
+            <label for="phone">Телефон для связи</label>
+            <input id="phone" name="phone" type="text" placeholder="Например: +7 999 123-45-67" required />
           </div>
-        </div>
 
-        <div id="autoFields">
-          <div class="grid">
-            <div class="field">
-              <label for="brand">Марка</label>
-              <select id="brand" name="brand"></select>
-            </div>
+          <div class="field">
+            <label for="brand">Марка</label>
+            <select id="brand" name="brand"></select>
+          </div>
 
-            <div class="field">
-              <label for="model">Модель</label>
-              <select id="model" name="model"></select>
-            </div>
+          <div class="field">
+            <label for="model">Модель</label>
+            <select id="model" name="model"></select>
           </div>
 
           <div class="field">
@@ -71,19 +63,19 @@
             <select id="modification" name="modification"></select>
           </div>
 
-          <div class="grid">
+          <div class="row-2">
             <div class="field">
-              <label for="yearFrom">Год</label>
+              <label for="yearFrom">Год выпуска</label>
               <select id="yearFrom" name="yearFrom"></select>
             </div>
 
             <div class="field">
-              <label for="budget">Бюджет</label>
-              <input id="budget" name="budget" type="text" inputmode="numeric" placeholder="Например: 2 000 000 ₽" />
+              <label for="fuelType">Топливо</label>
+              <input id="fuelType" name="fuelType" type="text" placeholder="Например: дизель / бензин / гибрид" />
             </div>
           </div>
 
-          <div class="grid">
+          <div class="row-2">
             <div class="field">
               <label for="mileage">Пробег до</label>
               <div class="range-wrap">
@@ -93,52 +85,62 @@
             </div>
 
             <div class="field">
-              <label for="fuelType">Топливо</label>
-              <input id="fuelType" name="fuelType" type="text" placeholder="Например: дизель / бензин / гибрид" />
+              <label for="budget">Бюджет, ₽</label>
+              <input id="budget" name="budget" type="text" inputmode="numeric" placeholder="Например: 2 000 000 ₽" />
             </div>
           </div>
 
           <div class="field">
-            <label for="comment">Пожелания</label>
-            <textarea id="comment" name="comment" rows="4" placeholder="Цвет, комплектация, салон, привод, сроки, город доставки..."></textarea>
+            <label for="comment">Дополнительно (цвет, комплектация, салон, сроки)</label>
+            <textarea id="comment" name="comment" rows="5" placeholder="Напишите пожелания по автомобилю, цвету, комплектации, срокам и другим параметрам..."></textarea>
+          </div>
+
+          <div class="helper-text">
+            Можно указать удобное время для связи — я свяжусь с вами в Telegram или по телефону.
           </div>
         </div>
 
         <div id="partsFields" class="hidden">
-          <div class="grid">
-            <div class="field">
-              <label for="partsBrand">Марка авто</label>
-              <select id="partsBrand" name="partsBrand"></select>
-            </div>
-
-            <div class="field">
-              <label for="partsModel">Модель</label>
-              <select id="partsModel" name="partsModel"></select>
-            </div>
+          <div class="field">
+            <label for="partsName">Ваше имя</label>
+            <input id="partsName" name="name" type="text" placeholder="Например: Николай" />
           </div>
 
-          <div class="grid">
+          <div class="field">
+            <label for="partsPhoneVisual">Телефон для связи</label>
+            <input id="partsPhoneVisual" name="phone" type="text" placeholder="Например: +7 999 123-45-67" />
+          </div>
+
+          <div class="field">
+            <label for="partsBrand">Марка авто</label>
+            <select id="partsBrand" name="partsBrand"></select>
+          </div>
+
+          <div class="field">
+            <label for="partsModel">Модель</label>
+            <select id="partsModel" name="partsModel"></select>
+          </div>
+
+          <div class="row-2">
             <div class="field">
               <label for="partsYear">Год выпуска</label>
               <select id="partsYear" name="partsYear"></select>
             </div>
 
             <div class="field">
-              <label for="vin">VIN</label>
-              <input id="vin" name="vin" type="text" placeholder="Введите VIN, если есть" />
+              <label for="vin">VIN (если есть)</label>
+              <input id="vin" name="vin" type="text" placeholder="Например: KNAM64..." />
             </div>
           </div>
 
-          <div class="grid">
-            <div class="field">
-              <label for="partName">Название детали</label>
-              <input id="partName" name="partName" type="text" placeholder="Фара, бампер, турбина..." />
-            </div>
+          <div class="field">
+            <label for="partName">Что нужно (название запчасти / узла)</label>
+            <input id="partName" name="partName" type="text" placeholder="Например: передний бампер, левая фара, двигатель" />
+          </div>
 
-            <div class="field">
-              <label for="article">Артикул / номер детали</label>
-              <input id="article" name="article" type="text" placeholder="Если есть номер детали" />
-            </div>
+          <div class="field">
+            <label for="article">Оригинальный номер / артикул (если есть)</label>
+            <input id="article" name="article" type="text" placeholder="Например: 92101-S0000, 28113-5H000" />
           </div>
 
           <div class="field">
@@ -147,14 +149,22 @@
           </div>
 
           <div class="field">
-            <label for="partsComment">Комментарий</label>
-            <textarea id="partsComment" name="partsComment" rows="4" placeholder="Сторона, цвет, срочность, город доставки, фото детали..."></textarea>
+            <label for="partsComment">Дополнительно (фото, срочность, пожелания)</label>
+            <textarea id="partsComment" name="partsComment" rows="5" placeholder="Напишите всё, что важно: сторона, цвет, есть ли фото детали, срочность, город доставки..."></textarea>
+          </div>
+
+          <div class="helper-text">
+            Фото детали можно приложить сразу через форму.
           </div>
         </div>
 
         <button id="submitBtn" class="submit-btn" type="submit">
-          <span>Отправить заявку</span>
+          <span>Отправить</span>
         </button>
+
+        <div class="bottom-note">
+          Отправляя заявку, вы соглашаетесь с обработкой данных для подбора автомобиля или запчастей и обратной связи.
+        </div>
 
         <p id="status" class="status"></p>
       </form>
