@@ -69,6 +69,11 @@
             </div>
           </div>
 
+          <div class="field">
+            <label for="modification">Модификация / версия</label>
+            <select id="modification" name="modification"></select>
+          </div>
+
           <div class="grid">
             <div class="field">
               <label for="yearFrom">Год</label>
@@ -83,16 +88,16 @@
 
           <div class="grid">
             <div class="field">
-              <label for="engineVolume">Объём двигателя</label>
-              <select id="engineVolume" name="engineVolume"></select>
-            </div>
-
-            <div class="field">
               <label for="mileage">Пробег до</label>
               <div class="range-wrap">
                 <input id="mileage" name="mileage" type="range" min="0" max="500000" step="5000" value="80000" />
                 <div class="range-value" id="mileageValue">80 000 km</div>
               </div>
+            </div>
+
+            <div class="field">
+              <label for="fuelType">Топливо</label>
+              <input id="fuelType" name="fuelType" type="text" placeholder="Например: дизель / бензин / гибрид" />
             </div>
           </div>
 
