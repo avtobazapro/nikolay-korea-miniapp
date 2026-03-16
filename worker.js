@@ -9,7 +9,7 @@ export default {
         const botToken = env.TELEGRAM_BOT_TOKEN;
         const chatId = env.TELEGRAM_CHAT_ID;
 
-        const sheetsWebhookUrl = "https://script.google.com/macros/s/AKfycbxeqeSiXWtGiNoABZ9iMbgBh3kd0rhRuGLojiD2l96ahpGsGjLfLudx_LKeCjFcCLFk8Q/exec";
+        const sheetsWebhookUrl = "https://script.google.com/macros/s/AKfycbx6hFZnemqHU9yhO_SG9gmsxjS3facdZTQZYbZS5RqGZ6PJ3DJfWhxC5wDylLAWavV8Gg/exec";
 
         if (!botToken || !chatId) {
           return Response.json({ error: "ENV_NOT_FOUND" }, { status: 500 });
