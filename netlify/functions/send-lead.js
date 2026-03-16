@@ -24,27 +24,27 @@ exports.handler = async function (event) {
     if (data.formType === "Автозапчасти") {
       text =
         "🔧 Новая заявка на автозапчасти\n\n" +
-        "Имя: " + (data.name || "—") + "\n" +
-        "Контакт: " + (data.phone || "—") + "\n" +
-        "Марка: " + (data.partsBrand || "—") + "\n" +
-        "Модель: " + (data.partsModel || "—") + "\n" +
-        "Год: " + (data.partsYear || "—") + "\n" +
-        "VIN: " + (data.vin || "—") + "\n" +
-        "Деталь: " + (data.partName || "—") + "\n" +
-        "Артикул: " + (data.article || "—") + "\n" +
-        "Комментарий: " + (data.partsComment || "—");
+        "Имя: " + String(data.name || "—") + "\n" +
+        "Контакт: " + String(data.phone || "—") + "\n" +
+        "Марка: " + String(data.partsBrand || "—") + "\n" +
+        "Модель: " + String(data.partsModel || "—") + "\n" +
+        "Год: " + String(data.partsYear || "—") + "\n" +
+        "VIN: " + String(data.vin || "—") + "\n" +
+        "Деталь: " + String(data.partName || "—") + "\n" +
+        "Артикул: " + String(data.article || "—") + "\n" +
+        "Комментарий: " + String(data.partsComment || "—");
     } else {
       text =
         "🚘 Новая заявка на подбор авто\n\n" +
-        "Имя: " + (data.name || "—") + "\n" +
-        "Контакт: " + (data.phone || "—") + "\n" +
-        "Марка: " + (data.brand || "—") + "\n" +
-        "Модель: " + (data.model || "—") + "\n" +
-        "Год от: " + (data.yearFrom || "—") + "\n" +
-        "Бюджет: " + (data.budget || "—") + "\n" +
-        "Объём двигателя: " + (data.engineVolume || "—") + "\n" +
-        "Пробег до: " + (data.mileage || "—") + "\n" +
-        "Пожелания: " + (data.comment || "—");
+        "Имя: " + String(data.name || "—") + "\n" +
+        "Контакт: " + String(data.phone || "—") + "\n" +
+        "Марка: " + String(data.brand || "—") + "\n" +
+        "Модель: " + String(data.model || "—") + "\n" +
+        "Год от: " + String(data.yearFrom || "—") + "\n" +
+        "Бюджет: " + String(data.budget || "—") + "\n" +
+        "Объём двигателя: " + String(data.engineVolume || "—") + "\n" +
+        "Пробег до: " + String(data.mileage || "—") + "\n" +
+        "Пожелания: " + String(data.comment || "—");
     }
 
     const telegramResponse = await fetch(
@@ -55,7 +55,7 @@ exports.handler = async function (event) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          chat_id: chatId,
+          chat_id: String(chatId),
           text: text,
         }),
       }
