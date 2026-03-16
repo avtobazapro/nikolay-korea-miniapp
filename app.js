@@ -13,6 +13,11 @@ const form = document.getElementById("leadForm");
 const statusEl = document.getElementById("status");
 const submitBtn = document.getElementById("submitBtn");
 
+const brandSelect = document.getElementById("brand");
+const modelSelect = document.getElementById("model");
+const partsBrandSelect = document.getElementById("partsBrand");
+const partsModelSelect = document.getElementById("partsModel");
+
 const yearFromSelect = document.getElementById("yearFrom");
 const partsYearSelect = document.getElementById("partsYear");
 const engineVolumeSelect = document.getElementById("engineVolume");
@@ -24,6 +29,42 @@ const partsMileageInput = document.getElementById("partsMileage");
 const partsMileageValue = document.getElementById("partsMileageValue");
 
 const budgetInput = document.getElementById("budget");
+
+const CAR_DATA = {
+  "Audi": ["A3", "A4", "A5", "A6", "A7", "A8", "Q3", "Q5", "Q7", "Q8", "e-tron"],
+  "BMW": ["1 Series", "2 Series", "3 Series", "4 Series", "5 Series", "7 Series", "X1", "X3", "X4", "X5", "X6", "X7", "i4", "i5", "iX"],
+  "Bentley": ["Bentayga", "Continental GT", "Flying Spur"],
+  "Cadillac": ["CT4", "CT5", "Escalade", "XT4", "XT5", "XT6"],
+  "Chevrolet": ["Camaro", "Colorado", "Equinox", "Malibu", "Tahoe", "Traverse", "Trax"],
+  "Chrysler": ["300", "Pacifica"],
+  "Ford": ["Escape", "Explorer", "Expedition", "F-150", "Mustang"],
+  "Genesis": ["G70", "G80", "G90", "GV60", "GV70", "GV80"],
+  "GMC": ["Acadia", "Sierra", "Terrain", "Yukon"],
+  "Honda": ["Accord", "CR-V", "Civic", "Odyssey", "Pilot"],
+  "Hyundai": ["Accent", "Avante", "Azera", "Grandeur", "Ioniq 5", "Ioniq 6", "Kona", "Palisade", "Santa Fe", "Sonata", "Staria", "Tucson"],
+  "Infiniti": ["Q50", "Q60", "QX50", "QX60", "QX80"],
+  "Jaguar": ["E-Pace", "F-Pace", "XF"],
+  "Jeep": ["Cherokee", "Compass", "Grand Cherokee", "Wrangler"],
+  "Kia": ["Carnival", "EV6", "K5", "K7", "K8", "K9", "Mohave", "Morning", "Niro", "Ray", "Seltos", "Sorento", "Soul", "Sportage", "Stinger"],
+  "Land Rover": ["Defender", "Discovery", "Discovery Sport", "Range Rover", "Range Rover Sport", "Range Rover Velar"],
+  "Lexus": ["ES", "GX", "IS", "LS", "LX", "NX", "RX", "UX"],
+  "Lincoln": ["Aviator", "Corsair", "Navigator"],
+  "Maserati": ["Ghibli", "Levante", "Quattroporte"],
+  "Mazda": ["CX-30", "CX-5", "CX-9", "Mazda3", "Mazda6"],
+  "Mercedes-Benz": ["A-Class", "C-Class", "CLA", "CLS", "E-Class", "EQE", "EQS", "G-Class", "GLA", "GLB", "GLC", "GLE", "GLS", "S-Class"],
+  "Mini": ["Clubman", "Convertible", "Cooper", "Countryman"],
+  "Mitsubishi": ["Outlander", "Pajero Sport"],
+  "Nissan": ["Altima", "Kicks", "Murano", "Pathfinder", "Rogue", "Sentra"],
+  "Porsche": ["718 Boxster", "718 Cayman", "Cayenne", "Macan", "Panamera", "Taycan"],
+  "Renault": ["Arkana", "Koleos", "QM6", "SM6"],
+  "Rolls-Royce": ["Cullinan", "Ghost", "Phantom"],
+  "SsangYong": ["Korando", "Rexton", "Torres"],
+  "Subaru": ["Forester", "Outback", "XV"],
+  "Tesla": ["Model 3", "Model S", "Model X", "Model Y"],
+  "Toyota": ["Alphard", "Camry", "Corolla", "Highlander", "Land Cruiser", "RAV4", "Sienna"],
+  "Volkswagen": ["Arteon", "Golf", "Jetta", "Passat", "Tiguan", "Touareg"],
+  "Volvo": ["S60", "S90", "XC40", "XC60", "XC90"]
+};
 
 function setStatus(text, type = "") {
   statusEl.textContent = text;
@@ -80,6 +121,47 @@ function fillEngineSelect(selectEl, placeholder = "Выберите объём")
   });
 }
 
+function fillBrandSelect(selectEl, placeholder = "Выберите марку") {
+  if (!selectEl) return;
+  selectEl.innerHTML = `<option value="">${placeholder}</option>`;
+
+  Object.keys(CAR_DATA)
+    .sort((a, b) => a.localeCompare(b))
+    .forEach((brand) => {
+      const option = document.createElement("option");
+      option.value = brand;
+      option.textContent = brand;
+      selectEl.appendChild(option);
+    });
+}
+
+function fillModelSelect(selectEl, brand, placeholder = "Сначала выберите марку") {
+  if (!selectEl) return;
+  selectEl.innerHTML = "";
+
+  if (!brand || !CAR_DATA[brand]) {
+    selectEl.innerHTML = `<option value="">${placeholder}</option>`;
+    return;
+  }
+
+  const firstOption = document.createElement("option");
+  firstOption.value = "";
+  firstOption.textContent = "Выберите модель";
+  selectEl.appendChild(firstOption);
+
+  CAR_DATA[brand].forEach((model) => {
+    const option = document.createElement("option");
+    option.value = model;
+    option.textContent = model;
+    selectEl.appendChild(option);
+  });
+}
+
+fillBrandSelect(brandSelect, "Выберите марку");
+fillBrandSelect(partsBrandSelect, "Выберите марку");
+fillModelSelect(modelSelect, "");
+fillModelSelect(partsModelSelect, "");
+
 fillYearSelect(yearFromSelect, "Выберите год");
 fillYearSelect(partsYearSelect, "Выберите год");
 
@@ -88,6 +170,14 @@ fillEngineSelect(partsEngineVolumeSelect, "Выберите объём");
 
 updateRangeValue(mileageInput, mileageValue);
 updateRangeValue(partsMileageInput, partsMileageValue);
+
+brandSelect.addEventListener("change", () => {
+  fillModelSelect(modelSelect, brandSelect.value);
+});
+
+partsBrandSelect.addEventListener("change", () => {
+  fillModelSelect(partsModelSelect, partsBrandSelect.value);
+});
 
 mileageInput.addEventListener("input", () => {
   updateRangeValue(mileageInput, mileageValue);
@@ -176,6 +266,11 @@ form.addEventListener("submit", async (e) => {
       document.querySelector(".tab.active").dataset.tab === "auto"
         ? "Подбор авто"
         : "Автозапчасти";
+
+    fillBrandSelect(brandSelect, "Выберите марку");
+    fillBrandSelect(partsBrandSelect, "Выберите марку");
+    fillModelSelect(modelSelect, "");
+    fillModelSelect(partsModelSelect, "");
 
     fillYearSelect(yearFromSelect, "Выберите год");
     fillYearSelect(partsYearSelect, "Выберите год");
